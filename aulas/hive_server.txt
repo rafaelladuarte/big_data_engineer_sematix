@@ -1,0 +1,15 @@
+# Acessar o cliente Hive-Server
+$ docker exec -it hive-server bash
+
+# Consultar comandos
+# beeline --help
+
+# Conectar ao cliente
+$ beeline -u jbdc:hive2://localhost:10000
+
+# Testar conexao
+$ show databases;
+
+# Sair do terminal do cliente
+$ !exit
+
