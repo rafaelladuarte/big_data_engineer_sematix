@@ -1,0 +1,74 @@
+
+3. Acessar o container do namenode
+```
+$ sudo docker exec -it namenode bash
+```
+4. Criar a estrutura de pastas apresentada a baixo pelo comando: 
+```
+root@namenode:/# hdfs dfs -ls -R /
+root@namenode:/# hdfs dfs -ls -R /user
+root@namenode:/# hdfs dfs -mkdir -p /user/aluno/rafaella/data
+root@namenode:/# hdfs dfs -ls -R /user/aluno/rafaella
+root@namenode:/# hdfs dfs -mkdir /user/aluno/rafaella/recover
+root@namenode:/# hdfs dfs -mkdir /user/aluno/rafaella/delete
+
+```
+5. Enviar a pasta “/input/exercises-data/escola” e o arquivo “/input/exercises-data/entrada1.txt” para  data
+```
+root@namenode:/# hdfs dfs -ls /input
+root@namenode:/# hdfs dfs -put /input/exercises-data/escola/ /user/aluno/rafaella/data
+root@namenode:/# hdfs dfs -ls -R /user/aluno/rafaella/data
+root@namenode:/# hdfs dfs -put /input/exercises-data/entrada1.txt /user/aluno/rafaella/data
+```
+6. Mover o arquivo “entrada1.txt” para recover
+```
+root@namenode:/# hdfs dfs -mv /user/aluno/rafaela/data/entrada1.txt /user/aluno/rafaella/recover
+root@namenode:/# hdfs dfs -ls /user/aluno/rafaella/recover
+```
+7. Baixar o arquivo do hdfs “escola/alunos.json” para o sistema local /
+```
+root@namenode:/# hdfs dfs -get /input/exercises-data/escola/alunos/json
+```
+8. Deletar a pasta recover
+```
+root@namenode:/# hdfs dfs -rm -R /user/aluno/rafaella/recover
+```
+9. Deletar permanentemente o delete
+```
+root@namenode:/# hdfs dfs -rm -skipTrash -R /user/aluno/rafaella/delete
+```
+10. Procurar o arquivo “alunos.csv” dentro do /user
+```
+root@namenode:/# hdfs dfs -find /user -name alunos.csv
+```
+11. Mostrar o último 1KB do arquivo “alunos.csv”
+```
+root@namenode:/# hdfs dfs -tail /user/aluno/rafaella/data/escola/alunos.csv
+```
+12. Mostrar as 2 primeiras linhas do arquivo “alunos.csv”
+```
+root@namenode:/# hdfs dfs -cat /user/aluno/rafaella/data/escola/alunos.csv | head -n 2
+```
+13. Verificação de soma das informações do arquivo “alunos.csv”
+```
+root@namenode:/# hdfs dfs -checksum /user/aluno/rafaella/data/escola/alunos.csv
+```
+14. Criar um arquivo em branco com o nome de “test” no data
+```
+root@namenode:/# hdfs dfs -touch /user/aluno/rafaella/data/test
+```
+15. Alterar o fator de replicação do arquivo “test” para 2
+```
+root@namenode:/# hdfs dfs -setrep 2 /user/aluno/rafaella/data/test
+```
+16. Ver as informações do arquivo “alunos.csv”
+```
+root@namenode:/# hdfs dfs -stat %r /user/aluno/rafaella/data/escola/alunos.csv
+```
+17. Exibir o espaço livre do data e o uso do disco
+```
+root@namenode:/# hdfs dfs -df /user/aluno/rafaella/escola/data/alunos/csv
+root@namenode:/# hdfs dfs -df -h /user/aluno/rafaella/escola/data/alunos/csv
+root@namenode:/# hdfs dfs -du /user/aluno/rafaella/escola/data/alunos/csv
+root@namenode:/# hdfs dfs -df -h /user/aluno/rafaella/escola/data/alunos/csv
+```
