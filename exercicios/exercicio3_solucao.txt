@@ -1,0 +1,69 @@
+1. Enviar o arquivo local “/input/exercises-data/populacaoLA/populacaoLA.csv” para o diretório no HDFS “/user/aluno/<nome>/data/populacao”
+```
+$ sudo docker exec -it namenode bash
+root@namenode:/# ls /input/exercises-data/populacaoLA/
+root@namenode:/# hdfs dfs -mkdir /user/aluno/rafaella/data/populacao
+root@namenode:/# hdfs dfs -put /input/exercises-data/populacaoLA/populacaoLA.csv /user/aluno/rafaella/data/populacao
+root@namenode:/# hdfs dfs -cat /user/aluno/rafaella/data/populacao/populacaoLA.csv | head -n 3
+exit
+```
+2. Listar os bancos de dados no Hive
+```
+$ sudo docker exec -it hive-server bash
+root@hive_server:/opt# beeline -u jdbc:hive2://localhost:10000
+0: jdbc:hive2://localhost:10000> show databases;
+    +----------------+
+    | database_name  |
+    +----------------+
+    | default        |
+    +----------------+
+```
+3. Criar o banco de dados <nome>
+```
+0: jdbc:hive2://localhost:10000> create database rafaella;
+0: jdbc:hive2://localhost:10000> show databases;
+    +----------------+
+    | database_name  |
+    +----------------+
+    | default        |
+    | rafaella       |
+    +----------------+
+```
+4. Criar a Tabela Hive no BD <nome>
+```
+0: jdbc:hive2://localhost:10000> use rafaella;
+0: jdbc:hive2://localhost:10000> create table pop(
+. . . . . . . . . . . . . . . .> zip_code int, total_population int,
+. . . . . . . . . . . . . . . .> median_age float,total_males int,
+. . . . . . . . . . . . . . . .> total_females int,total_households int,
+. . . . . . . . . . . . . . . .> average_household_size float)
+. . . . . . . . . . . . . . . .> row format delimited
+. . . . . . . . . . . . . . . .> fields terminated by ','
+. . . . . . . . . . . . . . . .> lines terminated by '\n'
+. . . . . . . . . . . . . . . .> stored as textfile
+. . . . . . . . . . . . . . . .> tblproperties("skip.header.line.count"="1");
+```
+5. Visualizar a descrição da tabela pop
+```
+0: jdbc:hive2://localhost:10000> desc pop;
++-------------------------+------------+----------+
+|        col_name         | data_type  | comment  |
++-------------------------+------------+----------+
+| zip_code                | int        |          |
+| total_population        | int        |          |
+| median_age              | float      |          |
+| total_males             | int        |          |
+| total_females           | int        |          |
+| total_households        | int        |          |
+| average_household_size  | float      |          |
++-------------------------+------------+----------+
+0: jdbc:hive2://localhost:10000> desc formatted pop;
++-------------------------------+----------------------------------------------------+-----------------------------+
+|           col_name            |                     data_type                      |           comment           |
++-------------------------------+----------------------------------------------------+-----------------------------+
+| # col_name                    | data_type                                          | comment                     |
+|                               | NULL                                               | NULL                        |
+| zip_code                      | int                                                |                             |
+| total_population              | int                                                |                             |
+
+```
