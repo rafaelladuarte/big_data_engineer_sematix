@@ -60,17 +60,8 @@
 ```
 6. Mostrar por ordem de ano decrescente a quantidade de crianças nascidas por sexo com o nome iniciado com ‘A’
 ```
-0: jdbc:hive2://localhost:10000> select ano,sexo, sum(frequencia) as qte from nascimento where nome like 'A%' group by ano, sexo order by ano desc;
-+-------+-------+---------+
-|  ano  | sexo  |   qte   |
-+-------+-------+---------+
-| 2017  | M     | 185566  |
-| 2017  | F     | 308551  |
-| 2016  | M     | 191854  |
-| 2016  | F     | 324185  |
-| 2015  | M     | 194722  |
-| 2015  | F     | 329690  |
-+-------+-------+---------+
+0: jdbc:hive2://localhost:10000> 
+    select ano,sexo, sum(frequencia) as qte from nascimento where nome like 'A%' group by ano, sexo order by ano desc;
 ```
 7. Qual nome e quantidade das 5 crianças mais nascidas em 2016
 ```
