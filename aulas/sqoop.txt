@@ -87,3 +87,4 @@ $ sqoop import ... --warehouse-dir /user/cloudera/db -append
 
 # Definir Delimitadores
 $ sqoop import … --fields-terminated-by ’\t’ --lines-terminated-by ‘&’
+
