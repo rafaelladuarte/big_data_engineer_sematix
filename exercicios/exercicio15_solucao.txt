@@ -1,0 +1,89 @@
+1. Criar a tabela ‘controle’ com os dados
+```
+$ sudo docker exec -it hbase-master bash
+root@hbase-master:/# hbase shell
+hbase(main):002:0> put 'controle','1','produto:nome','ram'
+hbase(main):003:0> put 'controle','2','produto:nome','hd'
+hbase(main):004:0> put 'controle','3','produto:nome','mouse'
+hbase(main):015:0> put 'controle','1','produto:qtd','100'
+hbase(main):016:0> put 'controle','2','produto:qtd','50'
+hbase(main):017:0> put 'controle','3','produto:qtd','150'
+hbase(main):018:0> put 'controle','1','fornecedor:nome','TI Comp'
+hbase(main):019:0> put 'controle','2','fornecedor:nome','Pecas PC'
+hbase(main):020:0> put 'controle','3','fornecedor:nome','Inf Tec'
+hbase(main):021:0> put 'controle','1','fornecedor:estado','SP'
+hbase(main):022:0> put 'controle','2','fornecedor:estado','MG'
+hbase(main):023:0> put 'controle','3','fornecedor:estado','SP'
+```
+2. Listar as tabelas e verificar a estrutura da tabela ‘controle’
+```
+hbase(main):025:0> list
+TABLE                                               
+controle                                            
+=> ["controle"]
+hbase(main):026:0> describe 'controle'
+Table controle is ENABLED                           
+controle                                            
+COLUMN FAMILIES DESCRIPTION                         
+{NAME => 'fornecedor', BLOOMFILTER => 'ROW', VERSION
+S => '1', IN_MEMORY => 'false', KEEP_DELETED_CELLS =
+> 'FALSE', DATA_BLOCK_ENCODING => 'NONE', TTL => 'FO
+REVER', COMPRESSION => 'NONE', MIN_VERSIONS => '0', 
+BLOCKCACHE => 'true', BLOCKSIZE => '65536', REPLICAT
+ION_SCOPE => '0'}                                   
+{NAME => 'produto', BLOOMFILTER => 'ROW', VERSIONS =
+> '1', IN_MEMORY => 'false', KEEP_DELETED_CELLS => '
+FALSE', DATA_BLOCK_ENCODING => 'NONE', TTL => 'FOREV
+ER', COMPRESSION => 'NONE', MIN_VERSIONS => '0', BLO
+CKCACHE => 'true', BLOCKSIZE => '65536', REPLICATION
+_SCOPE => '0'}                                      
+```
+3. Contar o número de registros da tabela ‘controle’
+```
+hbase(main):027:0> count 'controle'
+```
+4. Alterar  a família de coluna produto para 3 versões
+```
+hbase(main):028:0> alter 'controle', {NAME=>'produto',VERSIONS=>3}
+```
+5. Alterar a quantidade para 200 do id 2
+```
+hbase(main):029:0> put 'controle','2','produto:qtd','200'
+```
+6. Pesquisar as versões do id 2  da coluna quantidade
+```
+hbase(main):030:0> get 'controle','2',{COLUMNS=>['produto:qtd','fornecedor'],VERSIONS=>2}
+COLUMN        CELL                                 
+ fornecedor:e timestamp=1631317454484, value=MG    
+ stado                                             
+ fornecedor:n timestamp=1631317346367, value=Pecas 
+ ome          PC                                   
+ produto:qtd  timestamp=1631318042569, value=200   
+ produto:qtd  timestamp=1631317255709, value=50 
+```
+7. Excluir os id do estado de SP
+```
+hbase(main):037:0> scan 'controle',{COLUMNS=>'fornecedor:estado',LIMIT=>5 , FILTER => "ValueFilter(=,'binary:SP')"}
+ROW           COLUMN+CELL                          
+ 1            column=fornecedor:estado, timestamp=1
+              631317443970, value=SP               
+ 3            column=fornecedor:estado, timestamp=1
+              631317465277, value=SP             
+hbase(main):038:0> deleteall 'controle','1'
+hbase(main):039:0> deleteall 'controle','3'
+```
+8. Deletar a coluna estado da chave 2
+```
+hbase(main):040:0> delete 'controle','2','fornecedor:estado'
+```
+9. Pesquisar toda a tabela controle
+```
+hbase(main):041:0> scan 'controle'
+ROW           COLUMN+CELL                          
+ 2            column=fornecedor:nome, timestamp=163
+              1317346367, value=Pecas PC           
+ 2            column=produto:nome, timestamp=163131
+              7214258, value=hd                    
+ 2            column=produto:qtd, timestamp=1631318
+              042569, value=200                    
+```
