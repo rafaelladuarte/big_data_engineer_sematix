@@ -2,6 +2,8 @@
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/elladarte/Big_Data_Engineer_Sematix/main/Big%20Data%20Foudaments/Semantix%20Academy%20-%20Big%20Data%20%E2%80%93%20Foundations%20-%202021-09-14.png"/>
+</p>
+<p align="center">
 <img src="https://img.shields.io/static/v1?label=Status&message=Concluido&color=green&style=for-the-badge"/>
 </p>
 
