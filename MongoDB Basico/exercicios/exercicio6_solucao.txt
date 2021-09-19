@@ -1,0 +1,193 @@
+1. Mostrar todos os documentos da collection produto do banco de dados seu nome
+```
+> use rafaella
+switched to db rafaella
+> show databases
+admin        0.000GB
+config       0.000GB
+local        0.000GB
+rafaella     0.000GB
+treinamento  0.000GB
+> show collections
+produto
+> db.produto.find()
+{ "_id" : 1, "nome" : "cpu i7", "qtd" : 15 }
+{ "_id" : 2, "nome" : "memória ram", "qtd" : "10", "descricao" : { "armazenamento" : "8GB", "tipo" : "DDR4" } }
+{ "_id" : 3, "nome" : "mouse", "qtd" : 30, "descricao" : { "conexao" : "USB 3.0", "sistema" : [ "Windows", "Mac", "Linux" ] }, "data_modificacao" : ISODate("2021-09-18T19:44:20.890Z") }
+{ "_id" : 4, "nome" : "hd externo", "qtd" : 20, "descricao" : { "conexao" : "USB 3.0", "armazenamento" : "500GB", "sistema" : [ "Windows 10", "Windows 8", "Windows 7" ] }, "data_modificacao" : ISODate("2021-09-18T19:44:20.890Z"), "descrisao" : { "sistema" : [ "Linux" ] } }
+```
+2. Criar o index “query_produto” para pesquisar o campo nome do produto em ordem alfabética
+```
+> db.produto.createIndex({nome: 1},{name:"query_produto"})
+{
+	"numIndexesBefore" : 1,
+	"numIndexesAfter" : 2,
+	"createdCollectionAutomatically" : false,
+	"ok" : 1
+}
+```
+3. Pesquisar todos os índices da collection produto
+```
+> db.produto.getIndexes()
+[
+	{
+		"v" : 2,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_"
+	},
+	{
+		"v" : 2,
+		"key" : {
+			"nome" : 1
+		},
+		"name" : "query_produto"
+	}
+]
+```
+4. Pesquisar todos os documentos da collection produto
+```
+> db.produto.find()
+{ "_id" : 1, "nome" : "cpu i7", "qtd" : 15 }
+{ "_id" : 2, "nome" : "memória ram", "qtd" : "10", "descricao" : { "armazenamento" : "8GB", "tipo" : "DDR4" } }
+{ "_id" : 3, "nome" : "mouse", "qtd" : 30, "descricao" : { "conexao" : "USB 3.0", "sistema" : [ "Windows", "Mac", "Linux" ] }, "data_modificacao" : ISODate("2021-09-18T19:44:20.890Z") }
+{ "_id" : 4, "nome" : "hd externo", "qtd" : 20, "descricao" : { "conexao" : "USB 3.0", "armazenamento" : "500GB", "sistema" : [ "Windows 10", "Windows 8", "Windows 7" ] }, "data_modificacao" : ISODate("2021-09-18T19:44:20.890Z"), "descrisao" : { "sistema" : [ "Linux" ] } }
+```
+5. Visualizar o plano de execução do exercício 4
+```
+> db.produto.find().explain()
+{
+	"explainVersion" : "1",
+	"queryPlanner" : {
+		"namespace" : "rafaella.produto",
+		"indexFilterSet" : false,
+		"parsedQuery" : {
+			
+		},
+		"queryHash" : "",
+		"planCacheKey" : "",
+		"maxIndexedOrSolutionsReached" : false,
+		"maxIndexedAndSolutionsReached" : false,
+		"maxScansToExplodeReached" : false,
+		"winningPlan" : {
+			"stage" : "COLLSCAN",
+			"direction" : "forward"
+		},
+		"rejectedPlans" : [ ]
+	},
+	"command" : {
+		"find" : "produto",
+		"filter" : {
+			
+		},
+		"$db" : "rafaella"
+	},
+	"serverInfo" : {
+		"host" : "",
+		"port" : 27017,
+		"version" : "5.0.2",
+		"gitVersion" : ""
+	},
+	"serverParameters" : {
+		"internalQueryFacetBufferSizeBytes" : *,
+		"internalQueryFacetMaxOutputDocSizeBytes" : *,
+		"internalLookupStageIntermediateDocumentMaxSizeBytes : *,
+		"internalDocumentSourceGroupMaxMemoryBytes" : *,
+		"internalQueryMaxBlockingSortMemoryUsageBytes" : *,
+		"internalQueryProhibitBlockingMergeOnMongoS" : *,
+		"internalQueryMaxAddToSetBytes" : *,
+		"internalDocumentSourceSetWindowFieldsMaxMemoryBytes" : *
+	},
+	"ok" : 1
+}
+```
+6. Pesquisar todos os documentos da collection produto, com uso da index “query_produto”
+```
+> db.produto.find().hint({nome:1})
+{ "_id" : 1, "nome" : "cpu i7", "qtd" : 15 }
+{ "_id" : 4, "nome" : "hd externo", "qtd" : 20, "descricao" : { "conexao" : "USB 3.0", "armazenamento" : "500GB", "sistema" : [ "Windows 10", "Windows 8", "Windows 7" ] }, "data_modificacao" : ISODate("2021-09-18T19:44:20.890Z"), "descrisao" : { "sistema" : [ "Linux" ] } }
+{ "_id" : 2, "nome" : "memória ram", "qtd" : "10", "descricao" : { "armazenamento" : "8GB", "tipo" : "DDR4" } }
+{ "_id" : 3, "nome" : "mouse", "qtd" : 30, "descricao" : { "conexao" : "USB 3.0", "sistema" : [ "Windows", "Mac", "Linux" ] }, "data_modificacao" : ISODate("2021-09-18T19:44:20.890Z") }
+```
+7. Visualizar o plano de execução do exercício 7
+```
+> db.produto.find().hint({nome:1}).explain()
+{
+	"explainVersion" : "1",
+	"queryPlanner" : {
+		"namespace" : "rafaella.produto",
+		"indexFilterSet" : false,
+		"parsedQuery" : {
+			
+		},
+		"queryHash" : "",
+		"planCacheKey" : "",
+		"maxIndexedOrSolutionsReached" : false,
+		"maxIndexedAndSolutionsReached" : false,
+		"maxScansToExplodeReached" : false,
+		"winningPlan" : {
+			"stage" : "FETCH",
+			"inputStage" : {
+				"stage" : "IXSCAN",
+				"keyPattern" : {
+					"nome" : 1
+				},
+				"indexName" : "query_produto",
+				"isMultiKey" : false,
+				"multiKeyPaths" : {
+					"nome" : [ ]
+				},
+				"isUnique" : false,
+				"isSparse" : false,
+				"isPartial" : false,
+				"indexVersion" : 2,
+				"direction" : "forward",
+				"indexBounds" : {
+					"nome" : [
+						"[MinKey, MaxKey]"
+					]
+				}
+			}
+		},
+		"rejectedPlans" : [ ]
+	},
+	"command" : {
+		"find" : "produto",
+		"filter" : {
+			
+		},
+		"hint" : {
+			"nome" : 1
+		},
+		"$db" : "rafaella"
+	},
+	"serverInfo" : {
+		"host" : "80fbbafc0f80",
+		"port" : 27017,
+		"version" : "5.0.2",
+		"gitVersion" : ""
+	},
+	"serverParameters" : {
+		"internalQueryFacetBufferSizeBytes" : *,
+		"internalQueryFacetMaxOutputDocSizeBytes" : *,
+		"internalLookupStageIntermediateDocumentMaxSizeBytes" : *,
+		"internalDocumentSourceGroupMaxMemoryBytes" : *,
+		"internalQueryMaxBlockingSortMemoryUsageBytes" : *,
+		"internalQueryProhibitBlockingMergeOnMongoS" : 0,
+		"internalQueryMaxAddToSetBytes" : *,
+		"internalDocumentSourceSetWindowFieldsMaxMemoryBytes" : *
+	},
+	"ok" : 1
+}
+```
+8. Remover o index “query_produto”
+```
+> db.produto.dropIndex({nome:1})
+{ "nIndexesWas" : 2, "ok" : 1 }
+```
+9. Pesquisar todos os índices da collection produto
+```
+> db.produto.getIndexes()
+[ { "v" : 2, "key" : { "_id" : 1 }, "name" : "_id_" } ]
+```

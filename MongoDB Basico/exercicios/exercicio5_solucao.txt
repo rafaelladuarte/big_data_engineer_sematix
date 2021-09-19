@@ -1,0 +1,43 @@
+1. Criar a collection teste no banco de dados seu nome
+```
+> db.createCollection('teste')
+{ "ok" : 1 }
+> show collections
+produto
+teste
+```
+2. Inserir o seguinte documento:
+```
+> db.teste.insertOne({usuario:'Semantix',data_acesso: new Date()})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("614647e536dbb478dc7415de")
+}
+```
+3. Buscar todos os documentos do ano >= 2020
+```
+> db.teste.find({data_acesso:{$gte:new Date("2020")}})
+{ "_id" : ObjectId("614647e536dbb478dc7415de"), "usuario" : "Semantix", "data_acesso" : ISODate("2021-09-18T20:11:17.060Z") }
+```
+4. Atualizar o campo “data_acesso” para timestamp com o valor da atualização do usuario Semantix
+```
+> db.teste.updateOne({usuario:"Semantix"},{$currentDate:{data_acesso:{$type:"timestamp"}}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+```
+5. Buscar todos os documentos
+```
+> db.teste.find()
+{ "_id" : ObjectId("614647e536dbb478dc7415de"), "usuario" : "Semantix", "data_acesso" : Timestamp(1631996215, 1) }
+```
+6. Deletar o documento criado pelo id
+```
+> db.teste.deleteOne({"_id":ObjectId("614647e536dbb478dc7415de")})
+{ "acknowledged" : true, "deletedCount" : 1 }
+```
+7. Deletar a collection
+```
+> db.teste.drop()
+true
+> show collections
+produto
+```

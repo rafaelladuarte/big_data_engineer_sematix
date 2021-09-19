@@ -1,0 +1,9 @@
+MongoDB Atlas
+
+1. Criar a conexão do cluster MongoDB Atlas através do MongoDB Compass
+
+2.  Criar o banco de dados escola no cluster em Cloud
+
+3. Importe o arquivo “dataset\cursos.csv” para a collection cursos e o arquivo “dataset\alunos.csv” para a collection alunos.
+
+4. Fazer consultas de teste.

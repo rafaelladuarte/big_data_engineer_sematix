@@ -1,0 +1,17 @@
+Consulta básica em documentos
+
+1. Mostrar todos os documentos da collection produto
+
+2. Pesquisar na collection produto, os documentos com os seguintes atributos:
+
+a) Nome = mouse
+
+b) Quantidade = 20 e apresentar apenas o campo nome
+
+c) Quantidade <= 20 e apresentar apenas os campos nome e qtd
+
+d) Quantidade entre 10 e 20
+
+e) Conexão = USB e não apresentar o campo _id e qtd
+
+f) SO que contenha “Windows” ou “Windows 10”

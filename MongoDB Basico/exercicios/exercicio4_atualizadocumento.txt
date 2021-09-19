@@ -1,0 +1,21 @@
+Atualização de Documentos
+
+1. Mostrar todos os documentos da collection produto do banco de dados seu nome
+
+2. Atualizar o valor do campo nome para “cpu i7” do id 1
+
+3. Atualizar o atributo quantidade para o tipo inteiro do id: 1
+
+4. Atualizar o valor do campo qtd para 30 de todos os documentos, com o campo qtd >= 30
+
+5. Atualizar o nome do campo “descricao.so” para “descricao.sistema” de todos os documentos
+
+6. Atualizar o valor do campo descricao.conexao para “USB 2.0” de todos os documentos, com o campo descricao.conexão = “USB”
+
+7. Atualizar o valor do campo descricao.conexao para “USB 3.0” de todos os documentos, com o campo descricao.conexao = “USB 2.0” e adicionar o campo “data_modificacao”, com a data da atualização dos documentos
+
+8. Atualizar um dos elementos do array descricao.sistema de “Windows” para “Windows 10” do id 3
+
+9. Acrescentar o valor “Linux” no array descricao.sistema do id 4
+
+10. Remover o valor “Mac” no array descricao.sistema do id 3 e adicionar o campo “ts_modificacao”, com o timestamp da atualização dos documentos
