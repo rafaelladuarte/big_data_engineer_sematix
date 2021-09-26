@@ -1,0 +1,15 @@
+Exercícios - Instalação
+
+1. Instalação do docker e docker-compose
+
+2. Baixar a imagem do redis
+
+3. Iniciar o Redis através do docker-compose
+
+4. Listas as imagens em execução
+
+5. Verificar a versão do Redis
+
+6. Acessar o Redis CLI
+
+7. Clicar no botão de Enviar Tarefa, e enviar o texto: ok

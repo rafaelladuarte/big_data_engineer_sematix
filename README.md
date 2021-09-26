@@ -6,8 +6,8 @@
 
 ## Cursos
 - [Big Data – Foundations](https://github.com/elladarte/Big_Data_Engineer_Sematix/tree/main/Big%20Data%20Foudaments);  ✅
+- [MongoDB - Básico](https://github.com/elladarte/Big_Data_Engineer_Sematix/tree/main/MongoDB%20Basico);   ✅
 - Redis - Básico; 
-- MongoDB - Básico; 
 - Kafka - Básico; 
 - Elastic Essential I;
 - Spark - Big Data Processing.
