@@ -7,7 +7,7 @@
 <img src="https://img.shields.io/static/v1?label=Status&message=Concluido&color=green&style=for-the-badge"/>
 </p>
 
-[Badge](https://badgr.com/public/assertions/RV2a2b2lSkWfKUZhe436mA?action=download)
+[Badge](https://badgr.com/public/assertions/RV2a2b2lSkWfKUZhe436mA?identity__email=rafaella.d.d.carvalho@gmail.com)
 
 ## Ementa
 Big Data – Foundations
