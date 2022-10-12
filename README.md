@@ -4,6 +4,16 @@
 <img src="https://img.shields.io/static/v1?label=Status&message=Em_Andamento&color=purple&style=for-the-badge"/>
 </p>
 
+<p align="center">
+    <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white"/>
+    <img src="https://img.shields.io/badge/apache_hadoop-F2C811?style=for-the-badge&logo=apachehadoop&logoColor=black"/>
+    <img src="https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white" />
+	<img src="https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white"/>
+    <img src="https://img.shields.io/badge/Apache%20Kafka-000?style=for-the-badge&logo=apachekafka" />
+    <img src="https://img.shields.io/badge/-ElasticSearch-005571?style=for-the-badge&logo=elasticsearch"/>
+    <img src="https://img.shields.io/badge/Apache_Spark-FFFFFF?style=for-the-badge&logo=apachespark&logoColor=#E35A16"/>
+</p>
+
 ## Cursos
 ### [Big Data – Foundations](https://github.com/rafaelladuarte/Big_Data_Engineer_Sematix/tree/main/0_Big_Data_Foudaments);  ✅
 - Ementa:
