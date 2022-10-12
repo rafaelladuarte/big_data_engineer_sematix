@@ -1,0 +1,54 @@
+1.Visualizar a descrição da tabela pop do banco de dados <nome>
+```
+$  docker exec -it hive-server bash
+root@hive_server:/opt# beeline -u jdbc:hive2://localhost:10000
+0: jdbc:hive2://localhost:10000> show databases;
+    +----------------+
+    | database_name  |
+    +----------------+
+    | default        |
+    | rafaella       |
+    +----------------+
+0: jdbc:hive2://localhost:10000> use rafaella;
+0: jdbc:hive2://localhost:10000> show tables;
+    +-----------+
+    | tab_name  |
+    +-----------+
+    | pop       |
+    +-----------+
+0: jdbc:hive2://localhost:10000> desc pop;
+    +-------------------------+------------+----------+
+    |        col_name         | data_type  | comment  |
+    +-------------------------+------------+----------+
+    | zip_code                | int        |          |
+    | total_population        | int        |          |
+    | median_age              | float      |          |
+    | total_males             | int        |          |
+    | total_females           | int        |          |
+    | total_households        | int        |          |
+    | average_household_size  | float      |          |
+    +-------------------------+------------+----------+
+```
+2.Selecionar os 10 primeiros registros da tabela pop
+```
+0: jdbc:hive2://localhost:10000> select * from pop limit 10;
+```
+3.Carregar o arquivo do HDFS “/user/aluno/<nome>/data/população/populacaoLA.csv” para a tabela Hive pop
+```
+$ sudo docker exec -it namenode bash
+root@namenode:/# hdfs dfs -ls /user/aluno/rafaella/data/
+0: jdbc:hive2://localhost:10000> load data inpath '/user/aluno/rafaella/data/populacao/populacaoLA.csv' overwrite into table pop;
+```
+4.Selecionar os 10 primeiros registros da tabela pop
+```
+0: jdbc:hive2://localhost:10000> select * from pop limit 10;
+```
+5.Contar a quantidade de registros da tabela pop
+```
+0: jdbc:hive2://localhost:10000> select count(*) from pop;
+    +------+
+    | _c0  |
+    +------+
+    | 319  |
+    +------+
+```

@@ -1,0 +1,96 @@
+1. Selecionar os 10 primeiros registros da tabela nascimento pelo ano de 2016
+```
+0: jdbc:hive2://localhost:10000> select * from nascimento where ano=2016  limit 10;
+    +------------------+------------------+------------------------+-----------------+
+    | nascimento.nome  | nascimento.sexo  | nascimento.frequencia  | nascimento.ano  |
+    +------------------+------------------+------------------------+-----------------+
+    | Emma             | F                | 19471                  | 2016            |
+    | Olivia           | F                | 19327                  | 2016            |
+    | Ava              | F                | 16283                  | 2016            |
+    | Sophia           | F                | 16112                  | 2016            |
+    | Isabella         | F                | 14772                  | 2016            |
+    | Mia              | F                | 14415                  | 2016            |
+    | Charlotte        | F                | 13080                  | 2016            |
+    | Abigail          | F                | 11747                  | 2016            |
+    | Emily            | F                | 10957                  | 2016            |
+    | Harper           | F                | 10773                  | 2016            |
+    +------------------+------------------+------------------------+-----------------+
+```
+2. Contar a quantidade de nomes de crianças nascidas em 2017
+```
+0: jdbc:hive2://localhost:10000> select count(nome) as qte from nascimento where ano=2017;
+    +--------+
+    |  qte   |
+    +--------+
+    | 32469  |
+    +--------+
+```
+3. Contar a quantidade de crianças nascidas em 2017
+```
+0: jdbc:hive2://localhost:10000> select sum(frequencia) as qte from nascimento where ano=2017;
+    +----------+
+    |   qte    |
+    +----------+
+    | 3546301  |
+    +----------+
+```
+4. Contar a quantidade de crianças nascidas por sexo no ano de 2015
+```
+0: jdbc:hive2://localhost:10000> select sexo, sum(frequencia) as qte from nascimento where ano=2015 group by sexo;
++-------+----------+
+| sexo  |   qte    |
++-------+----------+
+| F     | 1778883  |
+| M     | 1909804  |
++-------+----------+
+```
+5. Mostrar por ordem de ano decrescente a quantidade de crianças nascidas por sexo
+```
+0: jdbc:hive2://localhost:10000> select ano,sexo, sum(frequencia) as qte from nascimento  group by ano, sexo order by ano desc;
+    +-------+-------+----------+
+    |  ano  | sexo  |   qte    |
+    +-------+-------+----------+
+    | 2017  | M     | 1834490  |
+    | 2017  | F     | 1711811  |
+    | 2016  | M     | 1889052  |
+    | 2016  | F     | 1763916  |
+    | 2015  | M     | 1909804  |
+    | 2015  | F     | 1778883  |
+    +-------+-------+----------+
+```
+6. Mostrar por ordem de ano decrescente a quantidade de crianças nascidas por sexo com o nome iniciado com ‘A’
+```
+0: jdbc:hive2://localhost:10000> 
+    select ano,sexo, sum(frequencia) as qte from nascimento where nome like 'A%' group by ano, sexo order by ano desc;
+```
+7. Qual nome e quantidade das 5 crianças mais nascidas em 2016
+```
+0: jdbc:hive2://localhost:10000> select nome, max(frequencia) as qte from nascimento where ano=2016 group by nome order by qte desc limit 5;
+    +---------+--------+
+    |  nome   |  qte   |
+    +---------+--------+
+    | Emma    | 19471  |
+    | Olivia  | 19327  |
+    | Noah    | 19082  |
+    | Liam    | 18198  |
+    | Ava     | 16283  |
+    +---------+--------+
+```
+8. Qual nome e quantidade das 10 crianças mais nascidas em 2016 do sexo masculino e feminino
+```
+0: jdbc:hive2://localhost:10000> select nome,sexo ,max(frequencia) as qte from nascimento where ano=2016 group by nome,sexo order by qte desc limit 10;
+    +-----------+-------+--------+
+    |   nome    | sexo  |  qte   |
+    +-----------+-------+--------+
+    | Emma      | F     | 19471  |
+    | Olivia    | F     | 19327  |
+    | Noah      | M     | 19082  |
+    | Liam      | M     | 18198  |
+    | Ava       | F     | 16283  |
+    | Sophia    | F     | 16112  |
+    | William   | M     | 15739  |
+    | Mason     | M     | 15230  |
+    | James     | M     | 14842  |
+    | Isabella  | F     | 14772  |
+    +-----------+-------+--------+
+```

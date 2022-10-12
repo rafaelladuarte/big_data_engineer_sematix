@@ -1,0 +1,35 @@
+# Criar partição numa tabela
+partitioned by (<campo> <type>)
+
+# Buckets
+clustered by (<campo>) into <qtd> buckets
+
+# Tabela Particionada
+create table user(
+    id int,
+    name String,
+    age int
+)
+partitioned by (data String)
+clustered by (id) into 4 buckets;
+
+# Particionamento Estatico
+hive> alter table <nomeTabela> add partition(<partição>=’<valor>’);
+hive> alter table logs add partition(data=’2019-21-02’);
+
+# Particionamento Dinamico
+hive> insert overwrite table user_cidade partition (cidade) select * from user;
+SET hive.exec.dynamic.partition = true;
+SET hive.exec.dynamic.partition.mode = nonstrict ;
+
+# Visualizar partições de uma tabela
+hive> show partitions user;
+
+# Excluir partições de uma tabela
+hive> alter table user drop partition (city=’SP’);
+
+# Alterar nome da partição de uma tabela
+hive> alter table user partition city rename to partition state;
+
+# Reparar Tabela12
+msck repair table <nomeTabela>

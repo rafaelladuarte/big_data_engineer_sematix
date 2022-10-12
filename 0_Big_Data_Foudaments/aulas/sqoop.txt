@@ -1,0 +1,90 @@
+# Verificar a versão
+$ sqoop version
+
+# Listar todos os comandos
+$ sqoop help
+
+# Ajuda de um comando
+$ sqoop help import
+    --connect, 
+    --connect-manager, 
+    --driver, 
+    --hadoop-mapred-home, 
+    --help, 
+    --password-file, 
+    -P, 
+    --password, 
+    --username, 
+    --verbose, ...
+
+# Importar todas as tabelas de um banc# de dados
+$ sqoop import-all-tables ...
+
+# Listar Banc# de Dados
+$ sqoop list-databases \
+--connect jdbc:mysql://database \
+--username usuari# \
+--password senha
+
+# Listar tabelas
+$ sqoop list-tables \
+--connect jdbc:mysql://database/employees \
+--username usuari# \
+--password senha
+
+# Consultar tabelas
+$ sqoop eval \
+--connect jdbc:mysql://database/employees \
+--username=root \
+--password=secret \
+--query "SELECT * FROM employees limit 15"
+
+# Criar tabela
+$ sqoop eval --connect … --query "create table setor(cod int(2), name varchar(30))"
+$ sqoop eval --connect ... --query "describe setor“
+
+# Inserir linhas na tabela:
+$ sqoop eval --connect … --query "insert int# setor values(1,'vendas')"
+
+# Consultar tabela
+sqoop eval --connect … --query "select * from setor"
+sqoop eval --connect … --query "select * from employees where first_name like ‘A’"
+
+# Importar dados
+$ sqoop import --connect jdbc:mysql://database \
+--username root –password secret
+
+# --table: Importar de apenas uma tabela
+$ sqoop import --table employees \
+--connect jdbc:mysql://database/employees \
+--username root \
+--password secret
+
+# --columns: Importar colunas específicas
+$ sqoop import … --columns "id,last_name"
+
+# --where: Importar linhas correspondentes
+$ sqoop import … --where "state='SP'"
+
+# Por padrão, # Sqoop armazena os dados n# diretóri# home d# HDFS
+ex. /user/<username>/<tablename>
+
+# --target-dir: Armazenar em um diretóri# específico
+$ sqoop import … --target-dir /user/root/db
+
+# --warehouse-dir: Armazenar em um diretóri# base
+$ sqoop import … --warehouse-dir /user/root/db
+
+# Importar tabela departments
+--target-dir /data = /data
+--warehouse-dir /data = /data/departments
+
+# -delete-target-dir: Sobrescrever # diretório
+$ sqoop import … --warehouse-dir /user/cloudera/db -delete-target-dir
+
+# -append: Anexar os dados n# diretóri# existente
+$ sqoop import ... --warehouse-dir /user/cloudera/db -append
+
+# Definir Delimitadores
+$ sqoop import … --fields-terminated-by ’\t’ --lines-terminated-by ‘&’
+

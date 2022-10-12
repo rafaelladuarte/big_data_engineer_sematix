@@ -1,0 +1,20 @@
+4. Listas os containers em execução
+```
+$ sudo docker ps
+```
+5. Verificar os logs dos containers do docker-compose em execução
+```
+$ sudo docker
+```
+6. Verificar os logs do container namenode
+```
+```
+7.  Acessar o container namenode
+```
+```
+8. Listar  os diretórios do container namenode
+```
+```
+9. Parar os containers do Cluster de Big Data
+```
+```

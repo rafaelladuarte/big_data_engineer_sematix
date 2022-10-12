@@ -1,0 +1,88 @@
+1. Criar o diretório “/user/aluno/<nome>/data/nascimento” no HDFS
+```
+root@namenode:/# hdfs dfs -mkdir  /user/aluno/rafaella/data/nascimento
+root@namenode:/# hdfs dfs -ls /user/aluno/rafaella/data/
+```
+2. Criar e usar o Banco de dados <nome>
+```
+0: jdbc:hive2://localhost:10000> use rafaella;
+```
+3. Criar uma tabela externa no Hive com os parâmetros:
+```
+0: jdbc:hive2://localhost:10000> create external table nascimento(nome string, sexo string, frequencia int) partitioned by (ano int) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile location '/user/aluno/rafaella/data/nascimento';
+
+```
+4.Adicionar partição ano=2015
+```
+0: jdbc:hive2://localhost:10000> alter table nascimento add partition(ano=2015);
+```
+5.Enviar o arquivo local “input/exercises-data/names/yob2015.txt” para o HDFS no diretório /user/aluno/<nome>/data/nascimento/ano=2015
+```
+0: jdbc:hive2://localhost:10000> select * from nascimento limit 10;
+    +------------------+------------------+------------------------+-----------------+
+    | nascimento.nome  | nascimento.sexo  | nascimento.frequencia  | nascimento.ano  |
+    +------------------+------------------+------------------------+-----------------+
+    +------------------+------------------+------------------------+-----------------+
+root@namenode:/# hdfs dfs -put /input/exercises-data/names/yob2015.txt /user/aluno/rafaella/data/nascimento/ano=2015
+```
+6.Selecionar os 10 primeiros registros da tabela nascimento no Hive
+```
+0: jdbc:hive2://localhost:10000> select * from nascimento limit 10;
+    +------------------+------------------+------------------------+-----------------+
+    | nascimento.nome  | nascimento.sexo  | nascimento.frequencia  | nascimento.ano  |
+    +------------------+------------------+------------------------+-----------------+
+    | Emma             | F                | 20435                  | 2015            |
+    | Olivia           | F                | 19669                  | 2015            |
+    | Sophia           | F                | 17402                  | 2015            |
+    | Ava              | F                | 16361                  | 2015            |
+    | Isabella         | F                | 15594                  | 2015            |
+    | Mia              | F                | 14892                  | 2015            |
+    | Abigail          | F                | 12390                  | 2015            |
+    | Emily            | F                | 11780                  | 2015            |
+    | Charlotte        | F                | 11390                  | 2015            |
+    | Harper           | F                | 10291                  | 2015            |
+    +------------------+------------------+------------------------+-----------------+
+
+```
+7.Repita o processo do 4 ao 6 para os anos de 2016 e 2017.
+```
+0: jdbc:hive2://localhost:10000> alter table nascimento add partition(ano=2016);
+0: jdbc:hive2://localhost:10000> alter table nascimento add partition(ano=2017);
+root@namenode:/# hdfs dfs -put /input/exercises-data/names/yob2016.txt /user/aluno/rafaella/data/nascimento/ano=2016
+root@namenode:/# hdfs dfs -put /input/exercises-data/names/yob2017.txt /user/aluno/rafaella/data/nascimento/ano=2017
+root@namenode:/# hdfs dfs -ls /user/aluno/rafaella/data/nascimento
+    Found 3 items
+    drwxr-xr-x   - root supergroup          0 2021-09-02 00:31 /user/aluno/rafaella/data/nascimento/ano=2015
+    drwxr-xr-x   - root supergroup          0 2021-09-02 00:46 /user/aluno/rafaella/data/nascimento/ano=2016
+    drwxr-xr-x   - root supergroup          0 2021-09-02 00:46 /user/aluno/rafaella/data/nascimento/ano=2017
+0: jdbc:hive2://localhost:10000> select * from nascimento where ano=2016  limit 10;
+    +------------------+------------------+------------------------+-----------------+
+    | nascimento.nome  | nascimento.sexo  | nascimento.frequencia  | nascimento.ano  |
+    +------------------+------------------+------------------------+-----------------+
+    | Emma             | F                | 19471                  | 2016            |
+    | Olivia           | F                | 19327                  | 2016            |
+    | Ava              | F                | 16283                  | 2016            |
+    | Sophia           | F                | 16112                  | 2016            |
+    | Isabella         | F                | 14772                  | 2016            |
+    | Mia              | F                | 14415                  | 2016            |
+    | Charlotte        | F                | 13080                  | 2016            |
+    | Abigail          | F                | 11747                  | 2016            |
+    | Emily            | F                | 10957                  | 2016            |
+    | Harper           | F                | 10773                  | 2016            |
+    +------------------+------------------+------------------------+-----------------+
+0: jdbc:hive2://localhost:10000> select * from nascimento where ano=2017  limit 10;
+    +------------------+------------------+------------------------+-----------------+
+    | nascimento.nome  | nascimento.sexo  | nascimento.frequencia  | nascimento.ano  |
+    +------------------+------------------+------------------------+-----------------+
+    | Emma             | F                | 19738                  | 2017            |
+    | Olivia           | F                | 18632                  | 2017            |
+    | Ava              | F                | 15902                  | 2017            |
+    | Isabella         | F                | 15100                  | 2017            |
+    | Sophia           | F                | 14831                  | 2017            |
+    | Mia              | F                | 13437                  | 2017            |
+    | Charlotte        | F                | 12893                  | 2017            |
+    | Amelia           | F                | 11800                  | 2017            |
+    | Evelyn           | F                | 10675                  | 2017            |
+    | Abigail          | F                | 10551                  | 2017            |
+    +------------------+------------------+------------------------+-----------------+
+```

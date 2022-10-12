@@ -1,0 +1,18 @@
+# Se o arquivo mapred-site.xml não estiver configurado pode setar manualmente
+hive> SET hive.exec.compress.output=true;
+hive> SET mapred.output.compression.codec= codec;
+hive> SET mapred.output.compression.type=BLOCK;
+
+# Adicionar o parâmetro compress em tblproperties na criação da tabela
+stored as <formatoArquivo> tblproperties(' formatoArquivo.compress’=‘<CompressaoArquivo>’);
+
+# Tabela com partição e compressão
+create table user(
+    id int,
+    name String,
+    age int
+)
+partitioned by (data String)
+clustered by (id) into 256 buckets
+stored as parquet tblproperties('parquet.compress'='SNAPPY');
+

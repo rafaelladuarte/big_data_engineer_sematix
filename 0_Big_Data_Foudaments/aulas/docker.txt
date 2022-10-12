@@ -1,0 +1,45 @@
+# Baixar as imagens
+$ docker-compose pull
+
+# Listar as imagens
+$ docker image ls
+
+# Executar os containers
+$ docker-compose up –d
+
+# Lista os containers
+$ docker container ls
+
+# Iniciar todos os serviços em background (-d)
+$ docker-compose up –d
+
+# parar os serviços
+$ docker-compose stop
+
+# Iniciar os serviços
+$ docker-compose start
+
+# Matar os serviços
+$ docker-compose dowm
+
+# Apagar todos os volumes sem uso
+$ docker volume prune
+
+# apagar tudo (image, volume, network)
+$ docker system prune --all
+
+# Visualizar os container ativos
+$ docker ps
+
+# Visualizar Todos os container 
+$ docker ps –a
+
+# Executar comandos no container
+$ docker exec -it <container> <comando>
+
+# Visualizar os logs
+$ docker logs <container>
+$ docker-compose logs
+
+# Enviar arquivos
+$ docker cp <diretório> <container>:/<diretório>

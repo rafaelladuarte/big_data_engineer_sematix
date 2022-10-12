@@ -1,0 +1,25 @@
+# Acessar o cliente Hive-Server
+$ docker exec -it hive-server bash
+
+# Consultar comandos
+# beeline --help
+
+# Conectar ao cliente
+$ beeline -u jdbc:hive2://localhost:10000
+
+# Testar conexao
+$ show databases;
+
+# Sair do terminal do cliente
+$ !exit
+
+# Inserir dados
+$ insert into table <nomeTabela> partition(<partition>=’<value>’) values(<campo>,<value>),
+(<campo>,<value>), (<campo>,<value>);
+
+# Carregar dados no sistema de arquivos local
+$ hive> load data inpath <diretório> into table <nomeTabela>;
+
+# Seleção Dados
+$ hive> select * from client where state=sp group by city having population > 100 order by client limit 10;
+
