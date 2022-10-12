@@ -1,8 +1,18 @@
 # Big Data do Semantix Academy: 
 
 <p align="center">
+<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/rafaelladuarte/Big_Data_Engineer_Sematix?style=plastic">
+</p>
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/rafaelladuarte/Big_Data_Engineer_Sematix/main/images/logo_semantix.png"/>
+</p>
+
+<p align="center">
 <img src="https://img.shields.io/static/v1?label=Status&message=Em_Andamento&color=purple&style=for-the-badge"/>
 </p>
+
+#
 
 <p align="center">
     <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white"/>
@@ -13,6 +23,8 @@
     <img src="https://img.shields.io/badge/-ElasticSearch-005571?style=for-the-badge&logo=elasticsearch"/>
     <img src="https://img.shields.io/badge/Apache_Spark-FFFFFF?style=for-the-badge&logo=apachespark&logoColor=#E35A16"/>
 </p>
+
+#
 
 ## Cursos
 ### [Big Data – Foundations](https://github.com/rafaelladuarte/Big_Data_Engineer_Sematix/tree/main/0_Big_Data_Foudaments);  ✅
