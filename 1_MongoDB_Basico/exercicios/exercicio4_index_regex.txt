@@ -1,0 +1,142 @@
+Index e plano de execução
+
+1. Mostrar todos os documentos da collection produto do banco de dados seu nome
+$ docker exec -it mongo bash
+$ mongo
+$ use cicero
+$ show collections
+$ db.produto.find()
+$ db.produto.find().pretty()
+
+2. Criar o index “query_produto” para pesquisar o campo nome do produto em ordem alfabética
+$ db.produto.createIndex({query_produto:1})
+$ db.produto.find({},{nome:1,_id:0}).sort({nome: 1}).hint({query_produto: 1})
+$ db.produto.createIndex({nome: 1},{name: "query_produto"}) *FORMA CORRETA
+
+3. Pesquisar todos os índices da collection produto
+$ db.produto.getIndexes()
+
+4. Pesquisar todos os documentos da collection produto
+$ db.produto.find()
+
+5. Visualizar o plano de execução do exercício 4
+$ db.produto.find().explain()
+
+6. Pesquisar todos os documentos da collection produto, com uso da index “query_produto”
+$ db.produto.find().hint({query_produto: 1})
+$ db.produto.find().hint({nome: 1}) *FORMA CORRETA
+
+
+7. Visualizar o plano de execução do exercício 7
+$ db.produto.find().hint({query_produto: 1}).explain()
+$ db.produto.find().hint({nome: 1}).explain() *FORMA CORRETA
+
+8. Remover o index “query_produto”
+$ db.produto.dropIndex({query_produto: 1})
+$ db.produto.dropIndex({nome: 1}) *FORMA CORRETA
+
+9. Pesquisar todos os índices da collection produto
+$ db.produto.getIndexes()
+
+_____________________________________________________
+
+Consultas com Regex
+
+1. Mostrar todos os documentos da collection produto do banco de dados seu nome
+$ db.produto.find()
+
+2. Buscar os documentos com o atributo nome, que contenham a palavra “cpu”
+$ db.produto.find({nome: {$regex:"cpu"}})
+
+3. Buscar os documentos com o atributo nome, que começam por “hd” e apresentar os campos nome e qtd
+$ db.produto.find({nome: {$regex:"^hd"}}, {nome:1,qtd:1,_id:0})
+
+4. Buscar os documentos  com o atributo descricao.armazenamento, que terminam com “GB” ou “gb” e apresentar os campos nome e descricao
+$ db.produto.find({"descricao.armazenamento": {$regex:"GB$", $options:"i"}}, {nome:1,descricao:1,_id:0})
+
+5. Buscar os documentos  com o atributo nome, que contenha a palavra memória, ignorando a letra “o”
+$ db.produto.find({nome: {$regex:"mem.ria", $options:"i"}})
+
+6. Buscar os documentos com o atributo qtd que contenham valores com letras, ao invés de números.
+$ db.produto.find({qtd: {$regex:"[a-z]"}})
+
+7. Buscar os documentos com o atributo descricao.sistema, que tenha exatamente a palavra “Windows”
+$ db.produto.find({"descricao.sistema": {$regex:"^Windows$"}})
+
+_____________________________________________________
+
+CRUD através do Mongo Express
+
+Todas as questão devem ser realizadas através do Mongo Express
+
+
+1. Criar a collection cliente no banco de dados seu nome
+
+2. Inserir os seguintes documentos:
+
+nome: Rodrigo, cidade: São José dos Campos, data_cadastro: 10/08/2020
+nome: João, cidade: São Paulo, data_cadastro: 05/08/2020
+3. Renomear a collection para clientes
+
+4. Buscar os documentos da cidade de São Paulo
+
+5. Buscar os documentos da cidade de São Paulo e apresentar apenas o nome e a cidade
+
+6. Atualizar o documento com nome João para cidade: Rio de Janeiro
+
+7. Criar um index para o campo cidade em ordem alfabética
+
+8. Deletar o documento com o nome João
+
+9. Deletar a collection clientes
+
+_____________________________________________________
+
+Instalação MongoDB Compass
+
+Todas as questão devem ser realizadas através do MongoDB Compass
+
+
+1. Criar a collection cliente no banco de dados seu nome
+
+2. Inserir os seguintes documentos:
+
+nome: Rodrigo, cidade: São José dos Campos, data_cadastro: 10/08/2020
+nome: João, cidade: São Paulo, data_cadastro: 05/08/2020
+3. Renomear a collection para clientes
+
+4. Buscar os documentos da cidade de São Paulo
+
+5. Buscar os documentos da cidade de São Paulo e apresentar apenas o nome e a cidade
+
+6. Atualizar o documento com nome João para cidade: Rio de Janeiro
+
+7. Criar um index para o campo cidade em ordem alfabética
+
+8. Deletar o documento com o nome João
+
+9. Deletar a collection clientes
+
+_____________________________________________________
+
+CRUD através do MongoDB Compass
+
+Todas as questão devem ser realizadas através do MongoDB Compass
+
+1. Criar a collection cliente no banco de dados seu nome
+
+2. Inserir os seguintes documentos:
+
+nome: Rodrigo, cidade: São José dos Campos, data_cadastro: 10/08/2020
+nome: João, cidade: São Paulo, data_cadastro: 05/08/2020
+3. Buscar os documentos da cidade de São Paulo
+
+4. Buscar os documentos da cidade de São Paulo e apresentar apenas o nome e a cidade
+
+5. Atualizar o documento com nome João para cidade: Rio de Janeiro
+
+6. Criar um index para o campo cidade em ordem alfabética
+
+7. Deletar o documento com o nome João
+
+8. Deletar a collection clientes

@@ -1,0 +1,162 @@
+Exercícios - Agregação I
+
+Agregações de Match, Group, Sort e Limit
+
+
+1. Crie o banco de dados escola
+
+2. Crie a collection alunos no banco de dados escola
+
+3. Importe o arquivo “dataset/alunos.csv” para a collection alunos, com os seguintes atributos:
+
+id_discente: Number
+nome: String
+ano_ingresso: Number
+nivel: String
+id_curso: Number
+
+4. Visualizar os valores únicos do “nivel” de cada “ano_ingresso”
+#Group
+{
+  _id: "$ano_ingresso",
+  nivel_por_ano: {
+    $addToSet: "$nivel"
+  }
+}
+
+5. Calcular a quantidade de alunos matriculados por cada “id_curso”
+#Group
+{
+  _id: "$id_curso",
+  qtd_aluno_por_curso: {
+    $sum: 1
+  }
+}
+6. Calcular a quantidade de alunos matriculados por “ano_ingresso” no "id_curso“: 1222
+#Math
+{
+  "id_curso": 1222
+}
+#Group
+{
+  _id: "$ano_ingresso",
+  qtd_aluno_por_curso: {
+    $sum: 1
+  }
+}
+7. Visualizar todos os documentos do “nível”: “M”
+#Math
+{
+  "nivel": "M"
+}
+8. Visualizar o último ano que teve cada curso (id_curso) dos níveis “M”
+$Math
+{
+  "nivel": "M"
+}
+#Group
+{
+  _id: "$id_curso",
+  ultimo_ano_por_curso_de_nivel_M: {
+    $max: "$ano_ingresso"
+  }
+}
+9. Visualizar o último ano que teve cada curso (id_curso) dos níveis “M”, ordenados pelos anos mais novos de cada curso
+$Math
+{
+  "nivel": "M"
+}
+#Group
+{
+  _id: "$id_curso",
+  ultimo_ano_por_curso_de_nivel_M: {
+    $max: "$ano_ingresso"
+  }
+}
+#Sort
+{
+  "ultimo_ano_por_curso_de_nivel_M": -1
+}
+
+10. Visualizar o último ano que teve os 5 últimos cursos (id_curso) dos níveis “M”, ordenados pelos anos mais novos
+$Math
+{
+  "nivel": "M"
+}
+#Group
+{
+  _id: "$id_curso",
+  ultimo_ano_por_curso_de_nivel_M: {
+    $max: "$ano_ingresso"
+  }
+}
+#Sort
+{
+  "ultimo_ano_por_curso_de_nivel_M": -1
+}
+#Limit
+5
+
+_______________________________________________
+
+Exercícios - Agregação II
+
+Agregação com Lookup e project
+
+1. Crie a collection cursos no banco de dados escola
+
+2. Importe o arquivo “dataset\cursos.csv” para a collection cursos, com os seguintes atributos:
+
+id_curso: Number
+id_unidade: Number
+nome: String
+nivel: String
+
+3. Realizar o left outer join da collection alunos e cursos, quando o id_curso dos 2 forem o mesmo.
+#Group
+{
+  _id: "$id_curso",
+  id_curso: {
+    $addToSet: "$id_curso"
+  }
+}
+#Lookup
+{
+  from: 'alunos',
+  localField: 'cursos',
+  foreignField: 'id_curso',
+  as: 'left_outer'
+}
+
+4. Realizar o left outer join da collection alunos e cursos, quando o id_curso dos 2 forem o mesmo e visualizar apenas os seguintes campos:
+Alunos: id_discente, nivel
+Cursos: id_curso, id_unidade, nome
+#TABELA ALUNOS
+#Lookup
+{
+  from: 'cursos',
+  localField: 'id_cursos',
+  foreignField: 'id_cursos',
+  as: 'left_outer_cursos'
+}
+#Project
+{
+  "_id":0, "id_discente": 1, "nivel":1,
+  "left_outer_cursos.id_curso":1, 
+  "left_outer_cursos.id_unidade":1, 
+  "left_outer_cursos.nome":1
+}
+
+_______________________________________________
+
+Exercícios - MongoDB Atlas
+
+MongoDB Atlas
+
+1. Criar a conexão do cluster MongoDB Atlas através do MongoDB Compass
+
+2.  Criar o banco de dados escola no cluster em Cloud
+
+3. Importe o arquivo “dataset\cursos.csv” para a collection cursos e o arquivo “dataset\alunos.csv” para a collection alunos.
+
+4. Fazer consultas de teste.
