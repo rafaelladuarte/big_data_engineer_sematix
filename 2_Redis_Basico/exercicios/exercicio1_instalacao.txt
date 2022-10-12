@@ -1,0 +1,25 @@
+Exercícios - Instalação
+
+1. Instalação do docker e docker-compose
+* Seguir os passos do arquivo PassosInstalacaoDockerLinux.txt
+
+2. Baixar a imagem do redis
+$ docker pull redis
+
+3. Iniciar o Redis através do docker-compose
+$ docker-compose up -d
+
+4. Listas as imagens em execução
+$ docker ps
+$ docker ps -a
+
+5. Verificar a versão do Redis
+$ docker exec -it redis redis-server --version
+$ docker exec -it redis redis-cli --version
+
+6. Acessar o Redis CLI
+$ docker exec -it redis bash
+$ redis-cli
+$ redis-server(Para acessar o servidor)
+
+

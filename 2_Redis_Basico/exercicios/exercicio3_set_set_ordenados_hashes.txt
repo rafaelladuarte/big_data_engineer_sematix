@@ -1,0 +1,112 @@
+Exercícios - Sets
+
+1. Deletar a chave “pesquisa:produto”
+$ del pesquisa:produto
+
+2. Criar a chave "pesquisa:produto" do tipo set com os seguintes valores: monitor, mouse e teclado
+$ sadd pesquisa:produto monitor mouse teclado
+
+3. Visualizar a quantidade de valores da chave
+$ scard pesquisa:produto
+
+4. Retornar todos os elementos da chave
+$ smembers pesquisa:produto
+
+5. Verificar se existe o valor monitor
+$ sismember pesquisa:produto monitor
+
+6. Remover o valor monitor
+$ srem pesquisa:produto monitor
+
+7. Recuperar um elemento e remove-lo do set
+$ spop pesquisa:produto
+
+8. Criar a chave "pesquisa:desconto“ do tipo set com os seguintes valores: memória RAM, monitor, teclado, HD
+$ sadd pesquisa:desconto "memoria RAM" monitor teclado HD
+
+9. Próximas questões fazem uso dos sets pesquisa:produto e pesquisa:desconto
+9.1 Visualizar a interseção entre os 2 sets
+$ sinter pesquisa:produto pesquisa:desconto
+
+9.2 Visualizar a diferença entre os 2 sets
+$ sdiff pesquisa:produto pesquisa:desconto
+
+9.3 Criar o set "pesquisa:produto_desconto" com a união entre os 2 sets
+$ sunionstores pesquisa:produto_desconto pesquisa:produto pesquisa:desconto
+
+
+________________________________________________
+
+Exercícios - Sets Ordenados
+
+1. Deletar a chave "pesquisa:produto"
+$ del pesquisa:produto
+
+2. Criar a chave "pesquisa:produto" do tipo set ordenado com os seguintes valores:
+Valor: monitor, Score: 100
+Valor: HD, Score: 20
+Valor: mouse, Score: 10
+Valor: teclado, Score: 50
+*O score representa a quantidade de pesquisas feitas para aquele produto na aplicação
+$ zadd pesquisa:produto 100 monitor 20 HD 10 mouse 50 teclado 
+
+1. Visualizar a quantidade de produtos
+$ zcard pesquisa:produto
+
+2. Visualizar todos os produtos do mais pesquisado ao menos pesquisado
+$ zrevrange pesquisa:produto 0 -1 withscores
+
+3. Visualizar o rank do produto teclado
+$ zrank pesquisa:produto teclado
+
+4. Visualizar o score do produto teclado
+$ zscore pesquisa:produto teclado
+
+5. Remover o valor HD da chave
+$ zrem pesquisa:produto HD
+
+6. Recuperar e remover do set o produto mais pesquisado
+$ zpopmax pesquisa:produto
+
+7. Recuperar e remover do set o produto menos pesquisado
+$ zpopmin pesquisa:produto
+
+8. Visualizar todos os produtos
+$ zrange pesquisa:produto 0 -1
+
+________________________________________________
+
+Exercícios - Hashes
+
+1. Deletar a chave “usuario:100”
+$ del usuario:100
+
+2. Criar uma chave “usuario:100” do tipo hash com a seguinte estrutura
+nome – Augusto
+estado – SP
+views – 10
+$ hmset usuario:100 nome Augusto estado SP views 10
+
+3. Visualizar todas as chaves e valores
+$ hgetall usuario:100
+
+4. Contar a quantidade de campos
+$ hlen usuario:100
+
+5. Visualizar apenas o nome e views
+$ hmget usuario:100 nome views
+
+6. Contar o tamanho do valor do campo nome
+$ hstrlen usuario:100 nome
+
+7. Incrementar em 2 o valor do campo views
+$ hincrby usuario:100 views 2
+
+8. Visualizar apenas os campos
+$ hkeys usuario:100
+
+9. Visualizar apenas os valores
+$ hvals usuario:100
+
+10. Deletar o campo estado
+$ hdel usuario:100 estado

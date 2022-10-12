@@ -1,0 +1,85 @@
+Exercícios - Strings
+
+1. Criar a chave "usuario:nome" e atribua o valor do seu nome
+$ docker exec -it redis bash
+$ redis-cli
+$ set usuario:nome cicero
+
+2. Criar a chave "usuario:sobrenome" e atribua o valor do seu sobrenome
+$ set usuario:sobrenome santos
+
+3. Busque a chave "usuario:nome“
+$ get usuario:nome
+
+4. Verificar o tamanho da chave "usuario:nome“
+$ strlen usuario:nome
+
+5. Verificar o tipo da chave "usuario:sobrenome"
+$ type usuario:sobrenome
+
+6. Criar a chave "views:qtd" e atribua o valor 100
+$ set views:qtd
+
+7. Incremente o valor em 10 da chave "views:qtd"
+$ incrby views:qtd 10
+
+8. Busque a chave "views:qtd"
+$ get views:qtd
+
+9. Deletar a chave "usuario:sobrenome"
+$ del usuario:sobrenome
+
+10. Verificar se a chave "usuario:sobrenome" existe
+$ exists usuario:sobrenome
+
+11. Definir um tempo de 3600 segundos para a chave "views:qtd" ser removida
+$ expire views:qtd 3600
+
+12. Verificar quanto tempo falta para a chave "views:qtd" ser removida
+$ ttl views:qtd
+
+13. Verificar a persistência da chave "usuario:nome"
+$ ttl usuario:nome
+
+14. Definir para a chave "views:qtd" ter persistência para sempre
+$ persist views:qtd
+
+___________________________________________________________________
+
+Exercícios - Listas
+
+1. Criar a chave “views:ultimo_usuario" e insira nesta ordem os seguintes valores como lista:
+•Final da lista “Joao”
+•Final da lista “Ana”
+•Inicio da lista “Carlos”
+•Final da lista “Carol”
+$ lpush views:ultimo_usuario Carlos 
+$ rpush views:ultimo_usuario Joao Ana Carol
+
+2. Visualizar todos os elementos da lista
+$ lrange views:ultimo_usuario 0 -1
+
+3. Visualizar todos os elementos da lista, com exceção do último
+$ lrange views:ultimo_usuario 0 -2
+
+4. Visualizar o tamanho da lista
+$ llen views:ultimo_usuario
+
+5. Redefinir o tamanho da lista, removendo o primeiro elemento (Sem usar o pop)
+$ ltrim views:ultimo_usuario 1 -1
+$ lrange views:ultimo_usuario 0 -1
+
+6. Visualizar o tamanho da lista
+$ llen views:ultimo_usuario
+
+7. Recuperar os elementos da lista da seguinte ordem:
+•Primeiro
+•Último
+•Primeiro com bloqueio de 5 segundos se a lista estiver vazia
+•Primeiro com bloqueio de 5 segundos se a lista estiver vazia
+$ lpop views:ultimo_usuario
+$ rpop views:ultimo_usuario
+$ blpush views:ultimo_usuario 5
+$ blpush views:ultimo_usuario 5
+$ brpush views:ultimo_usuario 5
+$ del views:ultimo_usuario
