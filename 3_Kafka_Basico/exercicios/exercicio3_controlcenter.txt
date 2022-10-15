@@ -1,0 +1,81 @@
+Exercícios - Control Center
+
+1. Criar um tópico com o nome msg-rapida com 4 partições, 1 replicação e deletar os dados após 5 minutos de uso.
+$ Cluster -> Topics -> [+ Add a topic]
+$ Incluir o nome msg-rapida
+$ Na partição incluir 4 + Enter para confirmar 
+$ Customize settings -> Incluir modo básico de replicação e incluir 5 minutes no tempo de delete.
+
+2. Produzir e consumir 2 mensagens para o tópico msg-rapida
+//Abrir o terminal e iniciar o kafka
+//Obs.: Para ter certeza que está funcionando, descrever o tópico msg-rapida
+$ kafka-topics --bootstrap-server localhost:9092 --topic msg-rapida --describe
+
+//Abrir outro terminal e criar o consumidor do grupo app-cli
+$ kafka-console-consumer --bootstrap-server localhost:9092 --topic msg-rapida
+
+// No terminal do produtor iniciar um producer
+$ kafka-console-producer --broker-list localhost:9092 --topic msg-rapida
+$ teste 1
+$ teste 2
+
+3. Qual o nome do cluster?
+$ controlcenter.cluster
+
+4. Quantos tópicos existem no cluster?
+$ 60
+
+5. Quantas partições existem o tópico msg-cli?
+$ 2
+
+6. Todas as réplicas estão sincronizadas no tópico msg-cli?
+$ Sim no brocker leader 1 
+
+7. Qual a política de limpeza do tópico msg-cli?
+$ retention.ms: 604800000ms - 1 semana.
+
+8. Alterar a política de limpeza do tópico msg-cli para deletar depois de um ano.
+$ alterar retention.ms para: 31557600000ms - 1ano.
+
+9. Qual o diretório de armazenamento de logs do cluster?
+$ a configuração log.dirs. fica armazenada em /var/lib/kafka/data
+
+10. Por padrão os dados são mantidos por quantos dias no Kafka?
+$ 168h - 1 semana
+
+11. Visualizar os gráficos de produção e consumo de dados do tópico msg-rapida.
+$ Clicar em topics -> msg-rapida	
+
+_________________________________________________
+
+Exercícios - KSQL
+
+1. Criar o tópico msg-usuario-csv
+$ Cluster -> Topics -> [+ Add a topic]
+$ Incluir o nome msg-usuario-csv
+
+2. Criar um produtor para enviar 3 mensagens contendo id e nome separados por virgula para o tópico msg-usuario-csv
+//Abrir o terminal e iniciar o kafka
+//Obs.: Para ter certeza que está funcionando, descrever o tópico msg-rapida
+$ kafka-topics --bootstrap-server localhost:9092 --topic msg-usuario-csv --describe
+$ kafka-console-producer --broker-list localhost:9092 --topic msg-usuario-csv
+$ 1, Joao
+$ 2, Ana
+$ 3, Carlos
+
+3. Visualizar os dados do tópico msg-usuario-csv
+$ list topics;
+
+4. Criar o Stream usuario_csv para ler os dados do tópico msg-usuario-csv
+$ ksqlDB -> ksqldb1 -> Streams -> + Add Stream
+$ Adicionar o nome usuario_csv, configurar encoding para delimited (para reconhecer a vírcula)
+$ Configurar o fiel_0 para Integer e field_1 para varchar
+
+5. Visualizar o Stream usuario_csv
+$ Clicar na Aba Stream
+
+6. Visualizar apenas o nome do Stream usuario_csv
+//Abrir o terminal
+$ docker exec -it ksqldb-cli bash
+$ ksql http://ksqldb-server:8088
+$ ksql> select FIELD_1 from usuario_csv EMIT CHANGES;

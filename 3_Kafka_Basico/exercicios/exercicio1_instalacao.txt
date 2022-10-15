@@ -1,0 +1,49 @@
+Exercícios - Instalação Cluster Kafka
+
+1. Criar a pasta kafka e inserir o arquivo docker-compose.yml da Guia Arquivos do treinamento
+$ cd/treinamentos
+$ mkdir kafka
+$ touch docker-compose.yml
+$ nano docker-compose.yml (Colar as configurações do arquivo docker-compose.yml + CTRL+O para salvar e CTRL + X para sair)
+
+2. Instalação do docker e docker-compose
+
+Docker: https://docs.docker.com/get-docker/ (Links para um site externo.)
+Docker-compose: https://docs.docker.com/compose/install/ (Links para um site externo.)
+3. Inicializar o cluster Kafka através do docker-compose
+$ docker-compose up -d
+
+4. Listas as imagens em execução
+$ docker images
+$ docker-compose ps
+$ docker-compose ps -a
+
+
+5. Visualizar o log dos serviços broker e zookeeper
+$ docker logs broker
+$ docker logs zookeeper
+
+6. Visualizar a interface do Confluent Control Center
+Acesso: http://localhost:9021/
+
+_______________________________________________________
+
+Exercícios - Confluent CLI
+
+1. Verificar versão do Confluent
+
+2. Usar o comando de ajuda para ver as propriedades de status
+
+3. Verificar o status do Zookeeper e do Kafka
+
+4. Iniciar o Kafka
+
+5. Verificar o status do do Zookeeper e do Kafka
+
+6. Visualizar o log do Zookeeper e do Kafka
+
+7. Verificar o consumo de CPU e RAM do Zookeeper e do Kafka
+
+8. Verificar o status de todos os serviços
+
+9. Visualisar todos os connectores

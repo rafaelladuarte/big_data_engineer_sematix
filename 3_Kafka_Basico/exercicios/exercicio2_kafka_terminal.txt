@@ -1,0 +1,76 @@
+Exercícios - Kafka por Linha de Comando
+
+1. Criar o tópico msg-cli com 2 partições e 1 réplica
+$ kafka-topics --bootstrap-server localhost:9092 --topic msg-cli --create --partitions 2 --replication-factor 1
+
+2. Descrever o tópico msg-cli
+$ kafka-topics --bootstrap-server localhost:9092 --topic msg-cli --describe
+
+3. Criar o consumidor do grupo app-cli
+//Abrir outro terminal
+$ kafka-console-consumer --bootstrap-server localhost:9092 --topic msg-cli --group app-cli
+
+4. Enviar as seguintes mensagens do produtor
+Msg 1
+Msg 2
+// No terminal do produtor
+$ kafka-console-producer --broker-list localhost:9092 --topic msg-cli
+$ Msg 1
+$ Msg 2
+
+5. Criar outro consumidor do grupo app-cli
+//Abrir outro terminal
+$ kafka-console-consumer --bootstrap-server localhost:9092 --topic msg-cli --group app-cli
+
+6. Enviar as seguintes mensagens do produtor
+Msg 4
+Msg 5
+Msg 6
+Msg 7
+
+// No terminal do produtor
+$ Msg 4
+$ Msg 5
+$ Msg 6
+$ Msg 7
+
+7. Criar outro consumidor do grupo app2-cli
+//Abrir outro terminal
+$ kafka-console-consumer --bootstrap-server localhost:9092 --topic msg-cli --group app2-cli
+
+8. Enviar as seguintes mensagens do produtor
+Msg 8
+Msg 9
+Msg 10
+Msg 11
+
+// No terminal do produtor
+$ kafka-console-producer --broker-list localhost:9092 --topic msg-cli
+$ Msg 8
+$ Msg 9
+$ Msg 10
+$ Msg 11
+
+9. Parar o app-cli
+$ CTRL+C nos terminais de grupo app-cli
+*Para definir o deslocamento obrigatóriamente precisa parar os consumidores antes.
+
+10. Definir o deslocamento para -2 offsets do app-cli
+$ kafka-consumer-groups --bootstrap-server localhost:9092 --group app-cli --reset-offsets --shift-by -2 --execute --topic msg-cli
+
+11. Descrever grupo
+$ kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group app-cli
+$ kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group app2-cli
+
+12. Iniciar o app-cli
+$ kafka-console-consumer --bootstrap-server localhost:9092 --topic msg-cli --group app-cli
+
+13. Redefinir o deslocamento o app-cli
+$ CTRL + C
+$ kafka-consumer-groups --bootstrap-server localhost:9092 --group app-cli --reset-offsets --to-earliest --execute --topic msg-cli
+
+14. Iniciar o app-cli
+$ kafka-console-consumer --bootstrap-server localhost:9092 --topic msg-cli --group app-cli
+
+15. Listar grupo
+$ kafka-consumer-groups --bootstrap-server localhost:9092 --list
