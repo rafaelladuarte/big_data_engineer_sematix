@@ -1,0 +1,8 @@
+Exercícios - Kafka Connect
+
+1. Adicionar o conector do Datagen pela Control Center, com as seguintes configurações:
+Nome do conector: GeracaoDados-Datagen
+Nome do tópico: topic-datagen
+Quickstart: pageviews
+
+2. Visualizar as mensagens no tópico através do Control Center

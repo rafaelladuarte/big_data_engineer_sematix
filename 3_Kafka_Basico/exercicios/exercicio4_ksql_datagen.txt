@@ -1,0 +1,127 @@
+Exercícios - KSQL Datagen
+
+1. Criar o tópico users com os dados do ksql-datagen
+•quickstart=users
+•topic=users
+//Abrir um terminal para o datagen
+$ docker exec -it ksql-datagen bash
+$ ksql-datagen
+$ ksql-datagen bootstrap-server=broker:29092 schemaRegistryUrl=schema-registry:8081 quickstart=users topic=users
+
+2. Visualizar os dados do tópico no Ksql
+//Abrir outro terminal para o ksql
+$ docker exec -it ksqldb-server bash
+$ ksql> list topics;
+$ ksql> print "users";
+
+3. Criar o stream users_raw com os dados do tópico users com as seguintes propriedades
+•kafka_topic='users'
+•value_format='JSON'
+•key = 'userid'
+•timestamp='viewtime'
+// No terminal do datagen
+$ CREATE STREAM users_raw WITH (KAFKA_TOPIC='users',VALUE_FORMAT='JSON',KEY='userid',TIMESTAMP='registertime');
+
+4. Visualizar a estrutura da Stream users_raw
+// No terminal do ksql
+$ ksql> show streams;
+$ ksql> show tables;
+
+5. Visualizar os dados da Stream users_raw
+//No terminal ksql
+$ ksql> select * from users_raw EMIT CHANGES;
+
+6. Repetir todo o proceso para o tópico pageviews
+•ksql-datagen quickstart=pageviews topic= pageviews
+//No terminal ksql-datagen
+$ ksql-datagen bootstrap-server=broker:29092 schemaRegistryUrl=schema-registry:8081 quickstart=pageviews topic=pageviews
+
+//No terminal ksql
+$ ksql> print "pageviews";
+
+//No terminal ksql-datagen
+$ CREATE STREAM pageviews_raw WITH (KAFKA_TOPIC='users', VALUE_FORMAT='JSON', KEY='userid', TIMESTAMP='registertime');
+
+//No terminal ksql
+$ ksql> select * from pageviews_raw EMIT CHANGES;
+
+___________________________________________________
+
+Exercícios - Schema Registry
+
+1. Visualizar os dados do tópico users;
+//Abrir o terminal com ksql
+$ docker exec -it ksqldb-server bash
+$ list topics;
+$ print "users";
+
+2. Criar o tópico users-avro
+//Abrir um terminal com o broker
+$ docker exec -it brocker bash
+$ kafka-topics --bootstrap-server localhost:9092 --topic users-avro --create --partitions 3 --replication-factor 1
+$ kafka-topics --bootstrap-server localhost:9092 --topic users-avro --describe
+
+a) Usar o kafka-avro-console-producer para enviar 1 mensagem
+// Abrir um terminal com o schema-registry
+$ docker exec -it schema-registry bash
+$ kafka-avro-console-producer --broker-list broker:29092 --topic users-avro --property schema.registry.url=http://localhost:8081 --property value.schema='{"type":"record","name":"myrecord","fields":[{"name":"id","type":"int"},{"name":"nome","type":"string"}]}'
+
+$ {"id":1,"nome":"Joao"}
+
+b) Usar o kafka-avro-console-consumer para consumir a mensagem
+//Em outro terminal abra o schema-registry
+$ docker exec -it schema-registry bash
+$ kafka-avro-console-consumer --topic users-avro --bootstrap-server broker:29092 --property schema.registry.url=http://localhost:8081 --from-beginning
+
+
+c) Visualizar o esquema no Control Center
+{
+  "fields": [
+    {
+      "name": "id",
+      "type": "int"
+    },
+    {
+      "name": "nome",
+      "type": "string"
+    }
+  ],
+  "name": "myrecord",
+  "type": "record"
+}
+
+
+3. Visualizar os dados do users-avro no KSQL
+$ ksql> print "users-avro"
+
+4. Criar um stream users-avro1 para o tópico users-avro
+$ ksql> CREATE STREAM users-avro1 WITH (KAFKA_TOPIC='users-avro',VALUE_FORMAT="avro")
+
+5. Visualizar os dados do stream users-avro1
+//No terminal do ksql
+$ print "users-avro1"
+
+Resposta:
+SET 'auto.offset.reset'='earliest';
+select * from users-avro1 emit changes;
+
+6. Usar o kafka-avro-console-producer para adicionar um novo campo chamado “unit” com valor padrão “1”
+//No terminal do schema-registry
+$ kafka-avro-console-producer --broker-list broker:29092 --topic users-avro --property schema.registry.url=http://localhost:8081 --property value.schema='{"type":"record","name":"myrecord","fields":[{"name":"id","type":"int"},{"name":"nome","type":"string"},{"name":"unit","type":"int","default":"1"}]}'
+
+7. Usar o kafka-avro-console-consumer para consumir as mensagens
+// No terminal do schema-registry
+$ kafka-avro-console-consumer --topic users-avro --bootstrap-server broker:29092 --property schema.registry.url=http://localhost:8081 --from-beginning
+
+8. Comparar os esquemas do users-avro no Control Center
+$ 
+
+9. Visualizar os dados no stream do tópico users-avro
+$ print "users-avro"
+
+Resposta:
+kafka-topics --bootstrap-sever localhost:9092 --topic users-avro --list
+kafka-topics --bootstrap-sever localhost:9092 --list
+list streams;
+SET 'auto.offset.reset'='earliest';
+select * from users-avro emit changes;
