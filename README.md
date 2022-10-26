@@ -37,7 +37,7 @@
     - Desafiar os estudantes na utilização desses novos conhecimentos com exercícios práticos.
 
 
-### [MongoDB - Básico](https://github.com/rafaelladuarte/Big_Data_Engineer_Sematix/tree/main/1_MongoDB_Basico);   ✅
+### [MongoDB - Básico](https://github.com/rafaelladuarte/Big_Data_Engineer_Sematix/tree/main/1_MongoDB_Basic);   ✅
 - Ementa:
     - Entendimento de conceitos e arquitetura NoSQL e MongoDB; 
     - Instalação de cluster MongoDB através de container e Cloud; Manipular coleções, documentos e índices; 
@@ -47,14 +47,14 @@
     - Entendimento de Replicação e shards;
     - Desafiar os estudantes na utilização desses novos conhecimentos com exercícios práticos.
 
-### [Redis - Básico](https://github.com/rafaelladuarte/Big_Data_Engineer_Sematix/tree/main/2_Redis_Basico);  ✅
+### [Redis - Básico](https://github.com/rafaelladuarte/Big_Data_Engineer_Sematix/tree/main/2_Redis_Basic);  ✅
 - Ementa:
     - Entendimento de conceitos e arquitetura NoSQL e Redis; 
     - Instalação de cluster Redis através de container; Manipulação de diversos tipos de estrutura de dados com Redis-CLI; 
     - Implementar paradigma de mensagens Pub/Sub; Configurações básicas de persistência de dados; 
     - Desafiar os estudantes na utilização desses novos conhecimentos com exercícios práticos.
 
-### Kafka - Básico; 
+### [Kafka - Básico](https://github.com/rafaelladuarte/Big_Data_Engineer_Sematix/tree/main/3_Kafka_Basic);  ✅
 - Ementa:
     - Entendimento de conceitos e arquitetura do Kafka e da Confluent; 
     - Instalação de cluster Kafka através de container; 
