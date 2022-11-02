@@ -1,0 +1,123 @@
+Exercícios Beats
+
+1.Enviar o arquivo <local>/paris 925.logs com uso do Filebeat
+
+//Criar pasta dataset dentro da pasta elastic - mkdir dataset
+//Criar arquivo touch paris-925.logs
+//Abrir o arquivo nano paris-925.logs e alterar as configurações para: 
+`filebeat.prospectors`
+`-`
+`type: log`
+`enabled: true`
+`paths:`
+/home/<usuario>/treinamentos/elastic/dataset
+#`-/var/log/*.log` 
+
+`output.elasticsearch:` //Escolher entre logstash ou elasticsearch para saída dos beats
+`hosts: ["<es_url>"]`
+`username : "<user>"`
+`password : "<password>"`
+
+//Download do arquivo filebeat:  curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.9.2-linux-x86_64.tar.gz
+
+//Extrair arquivo: tar xzvf filebeat-7.9.2-linux-x86_64.tar.gz
+
+//Testar se está ok: ./filebeat modules list
+
+//Testar se as configurações foram feitas corretamente: ./filebeat test config e depois ./filebeat test output
+
+//Iniciar o serviço do elastic: docker-compose up -d e depois docker-compose up start
+
+//Iniciar a configuração do sistema: sudo sysctl --system
+
+2.Verificar a quantidade de documentos do índice criado pelo Filebeat e visualizar seus 10 primeiros
+documentos
+
+//Dentro do Dev Tools do Elastic
+$ GET filebeat-7.9.2-2021.10.15-000001/_count //Contar a quantidade de índices
+
+$ GET filebeat-7.9.2-2021.10.15-000001/_search // Verificar os documentos
+
+3.Monitorar as métricas do docker
+•Referência:
+https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-module-docker.html
+•Encontrar o socket do Docker
+$sudo find / -name docker.sock
+
+//Download do arquivo metricbeat: curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-7.9.2-linux-x86_64.tar.gz
+
+//Extrair arquivo: tar xzvf metricbeat-7.9.2-linux-x86_64.tar.gz
+
+//Testar se está ok: ./metricbeat modules list
+
+// Habilitar o módulo docker: ./metricbeat modules enable docker
+
+//Testar se as configurações foram feitas corretamente: ./metricbeat test config e depois ./metricbeat test outuput
+
+// Verificar os módulos inativos: cd modules.d/
+
+//Métricas que consomem: cat docker.yml
+
+//Encontrar o socket do Docker: sudo find / name docker.sock e pegar o caminho: /mnt/wsl/docker-desktop/shared-sockets/guest-services/docker.sock
+
+//nano docker.yml e desabilitar o # as metricas que deseja monitorar
+
+`module: docker`
+`metricsets:`
+`container`
+`cpu`
+#`diskio`
+#`event`
+#`healthcheck``
+``info``
+``memory`
+#`network`
+
+`period: 10s`
+`hosts: ["unix:///mnt/wsl/docker-desktop/shared-sockets/guest-services/docker.sock"]`
+`enable: true`
+
+//Sair da pasta modules: cd ..
+
+//Testar novamente se as configurações estão corretas: ./metricbeat test config e depois ./metricbeat test outuput
+
+//Inicializar o metric beat
+
+sudo chown root modules.d/docker.yml
+sudo chown root modules.d/system.yml
+sudo chown root metricbeat.yml
+sudo ./metricbeat -e
+
+4.Verificar a quantidade de documentos do índice criado pelo Metricbeat e visualizar seus 10 primeiros
+documentos
+
+//Dentro do Dev Tools do Elastic
+
+$ GET metricbeat-7.9.2-2021.10.16-000001/_count
+
+$ GET metricbeat-7.9.2-2021.10.16-000001/_search
+
+5.Monitorar o site https://www.elastic.co/pt/ com uso do Heartbeat
+
+//Download do arquivo heartbeat: curl -L -O https://artifacts.elastic.co/downloads/beats/heartbeat/heartbeat-7.9.2-linux-x86_64.tar.gz
+//Extrair arquivo: tar xzvf heartbeat-7.9.2-linux-x86_64.tar.gz
+
+//Entrar na pasta: cd heartbeat-7.9.2-linux-x86_64/
+
+//Configurar o arquivo: nano heartbeat.yml
+
+ //Alterar o input: urls: ["http://localhost:9200"] para -> urls: ["http:///www.elastic.co/pt/ "]
+
+//Conferir se está tudo ok: ./heartbeat test config e ./heartbeat test output
+
+Iniciar serviço e iniciar monitoramento:
+
+sudo chown root heartbeat.yml
+sudo ./heartbeat -e
+
+6.Verificar a quantidade de documentos do índice criado pelo Heartbeat e visualizar seus 10 primeiros
+documentos
+
+$ GET heartbeat-7.9.2-2021.10.16-000001/_count
+
+$ GET heartbeat-7.9.2-2021.10.16-000001/_search

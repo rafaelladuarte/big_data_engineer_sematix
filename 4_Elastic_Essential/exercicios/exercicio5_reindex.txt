@@ -1,0 +1,87 @@
+Exercícios - Índices
+
+1. Visualizar as configurações do índice produto
+$ GET produto/_settings
+
+2. Visualizar o mapeamento do índice produto
+$ GET produto/_mapping
+
+3. Visualizar o mapeamento do atributo nome do índice produto
+$ GET produto/_mapping/field/nome
+
+4. Inserir o campo data do tipo date no índice produto
+$ PUT produto/_mapping
+{
+"properties":{
+	"data":{"type":"date"}
+	}
+}
+$ GET produto/_mapping/ 
+
+5. Adicionar o documento:
+_id: 6, "nome": "teclado", "qtd": 100, "descricao": "USB", "data":"2020-09-18"
+$ PUT produto/_doc/6
+{
+"nome": "teclado", 
+"qtd": 100, 
+"descricao": "USB", 
+"data":"2020-09-18"
+}
+
+6. Reindexar o índice produto para produto2, com o campo quantidade para o tipo short
+$ PUT produto2
+{} //Cria o índece novo
+$ GET produto/_mapping //Copia todo o campo properties do índece que já existe para o produto2
+$ PUT produto2/mapping
+{
+  "properties": {
+    "data": {
+      "type": "date"
+    },
+    "descricao": {
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
+        }
+      }
+    },
+    "nome": {
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
+        }
+      }
+    },
+    "qtd": {
+      "type": "short"
+    }
+  }
+}
+
+
+$ POST _reindex
+{
+"source":{
+	"index":"produto"
+	},
+	"dest":{
+	"index":"produto2"
+	}
+}
+
+
+7. Visualizar o mapeamento do índice produto2
+$ GET produto2/_mapping
+
+8. Fechar o índice produto
+$ POST produto/_close
+
+9. Pesquisar todos os documentos no índice produto
+$ GET produto/_search
+
+10. Abrir o índice produto
+$ POST produto/_open

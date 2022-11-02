@@ -1,0 +1,71 @@
+Exercícios Logstash
+
+1.Enviar o arquivo <local>/paris 925.logs para o logstash com uso do Filebeat
+
+$ docker-compose stop
+
+//Entrar na pasta do filebeat
+
+cd filebeat-7.9.2-linux-x86_64/
+
+sudo nano filebeat.yml
+
+//Comentar a saída do elasticsearch e habilitar a saída do logstash
+
+#output.elasticsearch:
+	#Array of hosts to connect to.
+	#hosts: ["localhost:9200"]
+
+output.logstash:
+	#The Logstash hosts
+	hosts: ["localhost:5044"]
+
+2.Configurar e executar o logstash com as seguintes configurações:
+•Entrada:
+beats {
+port => 5044
+}
+•Saída:
+elasticsearch{
+hosts => [ "elasticsearch:9200" ]
+index => "seu_nome-%{+YYYY.MM.dd}"
+}
+
+$ cd pipeline
+
+$ nano logstash.conf 
+
+//Colar as configurações acima e salvar
+
+3.Verificar a quantidade de documentos do índice criado pelo Logstash e visualizar seus 10 primeiros documentos
+
+//Iniciar o serviço do elastic: docker-compose up -d e depois docker-compose up start
+
+//Iniciar a configuração do sistema: sudo sysctl --system
+
+//Testar se as configurações foram feitas corretamente e iniciar o serviço : sudo ./filebeat test config e depois sudo ./filebeat test output
+
+// Excluir a pasta data para que ele comece a reenviar os arquivos, caso contrário, ele continua a enviar com os dados acumulados dos já enviados.
+
+sudo rm -rf data/
+sudo rm -rf logs/
+
+//Iniciar o envio dos dados
+
+sudo ./filebeat -e
+
+//No Dev Tools do ElasticSearch
+
+GET cicero-2021.10.16/_count
+
+GET cicero-2021.10.16/_search
+
+//DICAS:
+
+GET _cat/indices //Verificar todos os índices já criados.
+
+GET _cat/indices**?v** //Verifica a saúde dos índices
+
+green - Não tem réplica salva
+yellow - Contém 1 réplica não alocada
+red - Um shard primário não foi alocado

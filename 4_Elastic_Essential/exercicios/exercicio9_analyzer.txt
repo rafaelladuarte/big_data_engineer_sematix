@@ -1,0 +1,155 @@
+Exercícios - Analyzer
+
+1. Criar os Analyzer simple, standard, brazilian e portuguese para a seguinte frase:
+
+   O elasticsearch surgiu em 2010
+
+   $ docker-compose up -d
+
+   $ docker-compose start
+
+   $ sudo sysctl --system
+
+   $ POST _analyze
+   {
+     "analyzer": "simple",
+     "text": "O elasticsearch surgiu em 2010"
+   }
+
+   $ POST _analyze
+   {
+     "analyzer": "standard",
+     "text": "O elasticsearch surgiu em 2010"
+   }
+
+   $ POST _analyze
+   {
+     "analyzer": "brazilian",
+     "text":"O elasticsearch surgiu em 2010"
+   }
+
+   $ POST _analyze
+   {
+     "analyzer": "portuguese",
+     "text":"O elasticsearch surgiu em 2010"
+   }
+
+   
+
+2. Realizar os passos no índice produto
+
+   a) Criar um analyzer brazilian para o atributo descricao
+
+   $ GET produto/_mapping // 1º passo - Verificar a estrutura de mapeamento do tópico
+
+   $ GET produto/_settings // 2º passo - Verificar a estrutura de settings a serem aplicadas no reindex
+
+   //Como o campo já existe, não dará para executar o PUT. É preciso realizar o procedimento de indexação.
+
+   $	PUT produto
+   {
+     "mapping": {
+       "properties": {
+         "descricao": {
+           "type": "text",
+           "analyzer": "brazilian"
+         }
+       }
+     }
+   }
+
+   $	PUT produto1
+   {
+     "settings": {
+       "index": {
+         "number_of_shards": 1,
+         "number_of_replicas": 0
+       }
+     },
+     "mapping": {
+       "properties": {
+         "descricao": {
+           "type": "text",
+           "analyzer": "brazilian"
+         }
+       }
+     }
+   }
+   
+   $ POST _reindex
+   {
+     "source": {
+       "index": "produto"
+     },
+     "dest": {
+       "index": "produto1"
+     }
+   }
+   
+   $ GET produto1/_mapping
+   
+   
+   
+   b) Para o atributo descricao aplicar o analzyer brazilian para o tipo de campo text e criar o atributo descricao.original com o dado do tipo keyword
+   
+   DELETE produto
+   
+   PUT produto
+   {
+     "settings": {
+       "index": {
+         "number_of_shards": 1,
+         "number_of_replicas": 0
+       }
+     },
+     "mapping": {
+       "properties": {
+         "descricao": {
+           "type": "text",
+           "analyzer": "brazilian",
+           "fields": {
+             "original": {
+               "type": "keyword"
+             }
+           }
+         }
+       }
+     }
+   }
+
+   POST _reindex
+   {
+     "source": {
+       "index": "produto1"
+     },
+     "dest": {
+       "index": "produto"
+     }
+   }
+   
+   
+   
+   c) Buscar a palavra “compativel” no campo descricao.original (hits = 0)
+   
+   $ GET produto/_search
+   {
+     "query": {
+       "match": {
+         "descricao.original": "compativel"
+       }
+     }
+   }
+   
+   
+   
+   d) Buscar a palavra “compativel” no campo descricao
+   
+   $ GET produto/_search
+   {
+     "query": {
+       "match": {
+         "descricao": "compativel"
+       }
+     }
+   }
+   

@@ -1,0 +1,119 @@
+Exercícios - Agregações
+
+Realizar os exercícios no índice bolsa
+
+1. Calcular a média do campo volume
+
+   $ GET bolsa/_search
+   {
+     "size": 0,
+     "aggs": {
+       "mediana": {
+         "avg": {
+           "field": "volume"
+         }
+       }
+     }
+   }
+
+2. Calcular a estatística do campo close
+
+   $ GET bolsa/_search
+   {
+     "size": 0, 
+     "aggs":{
+       "estatistica_close":{
+         "stats": {
+           "field": "close"
+         }
+       }
+     }
+   }
+
+3. Visualizar os documentos do dia 2019-04-01 até agora. (hits = 3)
+
+   $ GET bolsa/_search
+   {
+     "query": {
+       "range": {
+         "@timestamp": {
+           "gte": "2019-04-01",
+           "lte": "now"
+         }
+       }
+     }
+   }
+
+4. Calcular a estatística do campo open do período do dia 2019-04-01 até agora
+
+   $ GET bolsa/_search
+   {
+     "query": {
+       "range": {
+         "@timestamp": {
+           "gte": "2019-04-01",
+           "lte": "now"
+         }
+       }
+     },
+     "size": 0,
+     "aggs": {
+       "estatistica_open": {
+         "stats": {
+           "field": "open"
+         }
+       }
+     }
+   }
+
+5. Calcular a mediana do campo open
+
+   $ GET bolsa/_search
+   {
+     "size": 3, 
+     "aggs":{
+       "mediana_open":{
+         "percentiles": {
+           "field": "open",
+           "percents": [
+             50
+           ]
+         }
+       }
+     }
+   }
+
+6. Contar a quantidade de documentos agrupados por ano
+
+   $ GET bolsa/_search
+   {
+     "size": 0, 
+     "aggs":{
+       "intervalo_data":{
+         "date_histogram": {
+           "field": "@timestamp",
+           "calendar_interval": "year"
+         }
+       }
+     }
+   }
+
+7. Contar a quantidade de documentos de 2 anos atrás até hoje
+
+   $ GET bolsa/_search
+   {
+     "size": 0, 
+     "aggs":{
+       "qtd_2_anos":{
+         "date_range": {
+           "field": "@timestamp",
+           "ranges": [
+             {
+               "from": "2018-10-13",
+               "to": "2020-10-13"
+             }
+           ]
+         }
+       }
+     }
+   }
