@@ -1,4 +1,26 @@
-Pergunta 150
+# Pergunta 13
+Quantos tokens a requisição irá gerar?
+Resposta: 4
+
+    POST _analyze
+    {
+        "analyzer": "brazilian",
+        "text": "A prova de 2020 está facil"
+    }
+
+# Pergunta 14
+Quantos tokens a requisição irá gerar?
+Resposta: 5
+
+    POST _analyze
+    {
+        "analyzer": "simple",
+        "text": "A prova de 2020 está facil"
+    }
+
+
+
+# Pergunta 15
 Qual a quantidade de documentos que a requisição irá retornar?
 Resposta: 0
 
