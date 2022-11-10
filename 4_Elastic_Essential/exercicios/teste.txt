@@ -1,0 +1,78 @@
+Pergunta 150
+Qual a quantidade de documentos que a requisição irá retornar?
+Resposta: 0
+
+    PUT avaliacao2
+
+    PUT avaliacao2/_mapping
+    {
+        "properties":{
+            "nome":{
+                "type":"text",
+                "fields":{
+                    "texto":{
+                        "type":"text",
+                        "analyzer":"simple"
+                    },
+                        "chave":{
+                        "type":"keyword"
+                    }
+                }
+            }
+        }
+    }
+
+    POST avaliacao2/_doc
+    {
+        "nome":"Elastic",
+        "nota":10
+    }
+
+    GET avaliacao2/_search
+    {
+        "query":{
+            "match":{
+            "nome.chave":"elastic"
+                }
+        }
+    }
+
+
+Pergunta 16
+Qual a quantidade de documentos que a requisição irá retornar?
+Resposta: 1
+
+    PUT avaliacao2
+
+    PUT avaliacao2/_mapping
+    {
+        "properties":{
+            "nome":{
+                "type":"text",
+                "fields":{
+                    "texto":{
+                        "type":"text",
+                        "analyzer":"simple"
+                    },
+                        "chave":{
+                        "type":"keyword"
+                    }
+                }
+            }
+        }
+    }
+
+    POST avaliacao2/_doc
+    {
+        "nome":"Elastic",
+        "nota":10
+    }
+
+    GET avaliacao2/_search
+    {
+        "query":{
+            "match":{
+            "nome.texto":"elastic"
+                }
+        }
+    }
