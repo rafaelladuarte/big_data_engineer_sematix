@@ -1,0 +1,10 @@
+id_imovel,rip,nome_imovel,logradouro,numero,complemento,bairro,cep,municipio,id_tipo_imovel,id_forma_aquisicao,area_terreno,valor_terreno,memorial_terreno,propriedade_instituicao
+3,8841.00465.500-3,"PRÉDIO EAD","Evaldo Behr",545,"SALA 05 - 1º PISO",Camobi,97110801,"SANTA MARIA",32,21,450.00,190480.50,"PRÉDIO COMERCIAL, COM DOIS PAVIMENTOS EM 
+ ALVENARIA, PISO REVESTIDO EM CERÂMICA, PINTURA 
+ SEMI BRILHO, ABERTURAS EM ALUMÍNIO, INSTALAÇÕES 
+ ELÉTRICAS E HIDRÁULICAS.",
+1,8841.00374.500-9,"TERRENO DA REITORIA",RST-287,s/n,"São José","Pé de Plátano",97105030,"SANTA MARIA",63,22,20000.00,2200000.00,"UMA FRAÇÃO DE TERRAS, sem benfeitorias com área de dois hectares (2Ha.) situada na zona rural, lugar denominado São José, distrito de Camobi, neste município, com as seguintes medidas e confrontações: 100m00, de frente ao SUL, com o Departamento Autônomo de Estradas de Rodagem do Rio Grande do Sul (DAER)  RS-3, Faixa Asfáltica que conduz à Universidade Federal de Santa Maria; 100m00 ao NORTE, onde entesta com propriedade de Ilba Catharina Zamberlan Padoin; 200m00, ao LESTE, com uma estrada vicinal que conduz ao lugar denominado Pau a Pique; e, ao OESTE, 200m00, com propriedade de Ilba Catharina Zamberlan Padoin. 
+ INCRA: - 859.0562.085.413/5 ",1
+2,8841.00422.500-9,"PRÉDIO REITORIA","RUA ESMERALDA",430,"PARQUE RESIDENCIAL SANTA LÚCIA",CAMOBI,97110767,"SANTA MARIA",32,21,1661.25,729189.08,,
+4,8841.00498.500-3,"SALA PRPPGI","Evaldo Behr",545,"SALA 03",Camobi,97110801,"SANTA MARIA",61,21,450.00,190480.50,"PRÉDIO COMERCIAL, COM DOIS PAVIMENTOS EM ALVENARIA, PISO REVESTIDO EM CERÂMICA, PINTURA SEMI BRILHO, ABERTURAS EM ALUMÍNIO, INSTALAÇÕES ELÉTRICAS E HIDRÁULICAS.",
+5,8841.00496.500-2,ALMOXARIFADO,"Evaldo Behr",545,"SALA 02",Camobi,97110801,"SANTA MARIA",61,21,450.00,190480.50,"PRÉDIO COMERCIAL COM DOIS PAVIMENTOS EM ALVENARIA, PISO REVESTIDO EM CERÂMICA, PINTURA SEMI BRILHO, ABERTURAS EM ALÚMINIO, INSTALAÇÕES ELÉTRICAS E HIDRÁULICAS.",

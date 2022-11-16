@@ -1,0 +1,77 @@
+Exercícios – Preparar os dados e o ambiente
+
+1. Configurar o jar do spark para aceitar o formato parquet em tabelas Hive
+
+Dentro da pasta spark executar os comandos abaixo:
+
+$ curl -O https://repo1.maven.org/maven2/com/twitter/parquet-hadoop-bundle/1.6.0/parquet-hadoop-bundle-1.6.0.jar
+$ docker cp parquet-hadoop-bundle-1.6.0.jar jupyter-spark:/opt/spark/jars
+
+2. Baixar os dados dos exercícios do treinamento no diretório spark/input (volume no Namenode)
+
+$ cd input
+$ sudo git clone https://github.com/rodrigo-reboucas/exercises-data.git .
+
+3. Verificar o envio dos dados para o namenode
+
+$ docker exec -t namenode ls /input/exercises-data
+
+4. Criar no hdfs a seguinte estrutura: /user/rafaella/data
+
+$ docker exec -it namenode bash
+$ hdfs dfs -ls /
+$ hdfs dfs -mkdir -p /user/rafaella/data
+
+5. Enviar todos os dados do diretório input para o hdfs em /user/rafaella/data
+
+$ Sair do namenode e executar o comando pwd para pegar caminho da pasta exercises-data
+$ Entrar novamente no namenode: docker exec -it namenode bash
+$ hdfs dfs -put /input* /user/rafaella/data
+
+------
+
+Exercícios – Testar o Jupyter Notebook
+
+1. Criar o arquivo do notebook com o nome teste_spark.ipynb
+
+2. Obter as informações da sessão de spark (spark)
+
+$ Executar o comando spark e SHIFT+ENTER
+
+3. Obter as informações do contexto do spark (sc)
+
+$ Executar o comando sc ou spark.sparkContext e SHIFT+ENTER
+
+4. Setar o log como INFO
+
+$ spark.sparkContext.setLogLevel("INFO")
+
+5. Visualizar todos os banco de dados com o catalog
+
+$ spark.catalog.listDatabases()
+
+6. Ler os dados "hdfs://namenode:8020/user/rodrigo/data/juros_selic/juros_selic.json“ com uso de Dataframe
+
+$ leitura_juros = spark.read.json("hdfs://namenode:8020/user/rafaella/data/input/exercises-data/juros_selic/juros_selic.json")
+$ leitura_juros.show(5)
+
+7. Salvar o Dataframe como **juros** no formato de tabela Hive
+
+$ leitura_juros.write.saveAsTable("juros")
+
+8. Visualizar todas as tabelas com o catalog
+
+$ spark.catalog.listTables()
+
+9. Visualizar no hdfs o formato e compressão que está a tabela juros do Hive
+
+//Dentro do Jupyter-Notebook
+$ !hdfs dfs -ls /user/hive/warehouse/juros
+
+10. Ler e visualizar os dados da tabela juros, com uso de Dataframe no formato de Tabela Hive
+
+$ spark.read.table("juros").show(5) //Table é a própria tabela do hive
+
+11. Ler e visualizar os dados da tabela juros , com uso de Dataframe no formato Parquet
+
+$ spark.read.parquet("hdfs://namenode:8020/user/hive/warehouse/juros").show(5)

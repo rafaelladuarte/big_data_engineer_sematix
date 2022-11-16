@@ -2,7 +2,7 @@ version: '3'
 services:
 
   namenode:
-    image: namenode_sqoop
+    image: fjardim/namenode_sqoop
     container_name: namenode
     hostname: namenode
     volumes:
@@ -17,10 +17,11 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500m
+          # memory: 500m
+          memory: 250m
   
   datanode:
-    image: datanode
+    image: fjardim/datanode
     container_name: datanode
     hostname: datanode
     volumes:
@@ -37,10 +38,11 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500m
+          # memory: 500m
+          memory: 250m
   
   hive-server:
-    image: hive
+    image: fjardim/hive
     container_name: hive-server
     hostname: hive_server
     env_file:
@@ -55,10 +57,11 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500m
+          # memory: 500m
+          memory: 250m
   
   hive-metastore:
-    image: hive
+    image: fjardim/hive
     container_name: hive_metastore
     hostname: hive_metastore
     env_file:
@@ -73,10 +76,11 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500m
+          # memory: 500m
+          memory: 250m
   
   hive-metastore-postgresql:
-    image: hive-metastore
+    image: fjardim/hive-metastore
     container_name: hive-metastore-postgresql
     hostname: hive_metastore_postgresql
     volumes:
@@ -86,10 +90,11 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500m
+          # memory: 500m
+          memory: 250m
 
   database:
-    image: mysql
+    image: fjardim/mysql
     container_name: database
     hostname: database
     ports:
@@ -97,7 +102,8 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500m
+          # memory: 500m
+          memory: 250m
     command: mysqld --innodb-flush-method=O_DSYNC --innodb-use-native-aio=OFF --init-file /data/application/init.sql
     volumes:
         - ./data/mysql/data:/var/lib/mysql
@@ -110,7 +116,7 @@ services:
         MYSQL_PASSWORD: secret
 
   zookeeper:
-    image: zookeeper
+    image: fjardim/zookeeper
     container_name: zookeeper
     hostname: zookeeper
     ports:
@@ -120,10 +126,11 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500m
+          # memory: 500m
+          memory: 250m
 
   kafka:
-    image: kafka
+    image: fjardim/kafka
     container_name: kafka
     hostname: kafka
     ports:
@@ -138,10 +145,11 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500m
+          # memory: 500m
+          memory: 250m
 
   hbase-master:
-    image: hbase-master
+    image: fjardim/hbase-master
     container_name: hbase-master
     hostname: hbase-master
     env_file:
@@ -155,10 +163,11 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500m
+          # memory: 500m
+          memory: 250m
   
   mongo:
-    image: mongo
+    image: fjardim/mongo
     container_name: mongo
     hostname: mongo
     restart: always
@@ -172,10 +181,11 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500m
+          # memory: 500m
+          memory: 250m
  
   mongo-express:
-    image: mongo-express
+    image: fjardim/mongo-express
     container_name: mongo_express
     hostname: mongo_express
     restart: always
@@ -188,10 +198,11 @@ services:
     deploy:
       resources:
         limits:
-          memory: 200m
+          # memory: 200m
+          memory: 100m
  
   kafkamanager:
-    image: kafkamanager
+    image: fjardim/kafkamanager
     container_name: kafkamanager
     hostname: kafkamanager
     environment: 
@@ -203,10 +214,11 @@ services:
     deploy:
       resources:
         limits:
-          memory: 200m
+          # memory: 200m
+          memory: 100m
 
   jupyter-spark:
-    image: jupyter-spark
+    image: fjardim/jupyter-spark
     hostname: jupyter-spark
     container_name: jupyter-spark
     command: notebook
@@ -226,4 +238,5 @@ services:
     deploy:
       resources:
         limits:
-          memory: 1g
+          # memory: 1g
+          memory: 500m

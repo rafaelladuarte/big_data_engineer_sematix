@@ -1,0 +1,88 @@
+Exercício – Spark Schemas
+
+1. Criar o DataFrame names_us_sem_schema para ler os arquivos no HDFS “/user/rodrigo/data/names”
+
+1. Verificar o tipo de arquivo para levantar qual será o modo de leitura:
+   $ !hdfs dfs -ls hdfs:///user/rodrigo/data/names
+   $ !hdfs dfs -cat hdfs:///user/rodrigo/data/names/yob1880.txt
+2. Realizar a leitura:
+   $ names_us_sem_schema_df = spark.read.csv("hdfs:///user/rodrigo/data/names")
+
+2. Visualizar o Schema e os 5 primeiros registos do names_us_sem_schema
+
+$ print(names_us_sem_schema_df.printSchema())
+$ names_us_sem_schema_df.show(5)
+
+Obs.: Caso o resultado do DataFrame seja null, então não fio possível ler os dados do Schema.
+
+3. Criar o DataFrame names_us para ler os arquivos no HDFS “/user/<nome>/data/names” com o seguinte schema:
+
+- nome: String
+- sexo: String
+- quantidade: Inteiro
+
+$ from pyspark.sql.types import StringType, IntegerType
+
+$ estrutura_lista[
+StructField("nome",StringType(),
+StructField("sexo",StringType(),
+StructField("quantidade",IntegerType())]
+
+$ schema_names = StructType(estrutura_lista)
+
+$ names_us_df = spark.read.csv("hdfs:///user/rodrigo/data/names", schema=schema_names)
+
+4. Visualizar o Schema e os 5 primeiros registos do names_us
+
+$ print(names_us_df.printSchema())
+$ names_us_df.show(5)
+
+5. Salvar o DataFrame names_us no formato orc no hdfs “/user/rodrigo/names_us_orc”
+
+$ names_us_df.write.orc("hdfs:///user/rodrigo/names_us_orc")
+
+$ !hdfs dfs -ls hdfs:///user/rodrigo/names_us_orc
+
+------
+
+Exercícios - Dataset com DataFrame
+
+1. Criar o DataFrame names_us para ler os arquivos no HDFS “/user/<nome>/data/names”
+
+$ docker exec -it jupyter-spark bash
+$ spark-shell
+$ val names_us = spark.read.csv("hdfs:///user/rodrigo/data/names")
+
+2. Visualizar o Schema do names_us
+
+$ names_us.printSchema()
+
+3. Mostras os 5 primeiros registros do names_us
+
+$ names_us.show(5)
+
+4. Criar um case class Nascimento para os dados do names_us
+
+$ case class Nascimento(nome: String, sexo:String, quantidade: Int)
+
+5. Criar o Dataset names_ds para ler os dados do HDFS “/user/<nome>/data/names”, com uso do case class Nascimento
+
+//Antes é preciso transformar o case class em um Schema
+
+$ import org.apache.spark.sql.Encoders
+$ val schema_names = Encoders.product[Nascimento].schema
+$ val names_ds = spark.read.schema(schema_names).csv("hdfs:///user/rodrigo/data/names") //Transforma em um DataFrame
+$ val names_ds = spark.read.schema(schema_names).csv("hdfs:///user/rodrigo/data/names").as[Nascimento] //Transforma em um DataSet
+
+6. Visualizar o Schema do names_ds
+
+$ names_ds.printSchema()
+
+7. Mostras os 5 primeiros registros do names_ds
+
+$ names_ds.show(5)
+
+8. Salvar o Dataset names_ds no hdfs “/user/<nome>/ names_us_parquet” no formato parquet com compressão snappy
+
+$ names_ds.write.parquet("hdfs:///user/cicero/names_us_parquet")
+$ spark.read.parquet("/user/cicero/names_us_parquet").printSchema() //Visualizar

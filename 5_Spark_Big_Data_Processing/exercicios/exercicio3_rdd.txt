@@ -1,0 +1,100 @@
+Exercícios - RDD
+
+1. Ler com RDD os arquivos localmente do diretório “/opt/spark/logs/” ("file:///opt/spark/logs/")
+
+$ !hdfs dfs -ls file:///opt/spark/logs
+
+2. Com uso de RDD faça as seguintes operações:
+
+arquivo = sc.textFile("file:///opt/spark/logs/spark--org.apache.spark.deploy.master.Master-1-jupyter-notebook.out")
+
+a) Contar a quantidade de linhas
+
+$ arquivo.count()
+
+b) Visualizar a primeira linha
+
+$ arquivo.first()
+
+c) Visualizar todas as linhas
+
+$ arquivo.collect()
+
+d) Contar a quantidade de palavras
+
+$ # 1. Separar palavras com lambda
+$ # 2. Contar quantidade de palavras
+$qtdPalavras = arquivo.flatMap(lambda linha: linha.split(" "))
+$qtdPalavras.count()
+
+e) Converter todas as palavras em minúsculas
+
+$ palavras_minusculas = qtdPalavras.map(lambda linha: linha.lower())
+$ palavras_minusculas.collect()
+
+f) Remover as palavras de tamanho menor que 2
+
+$ palavras_menor_2 = palavras_minusculas.filter(lambda palavra: len(palavra)>2)
+$ palavras_menor_2.collect()
+
+g) Atribuir o valor de 1 para cada palavra
+
+$ palavras_chave_valor = qtdPalavras.map(lambda palavra: (palavra, 1))
+$ palavras_chave_valor.take(5)
+
+h) Contar as palavras com o mesmo nome
+
+$ palavras_iguais = palavras_chave_valor.reduceByKey(lambda chave1, chave2: chave1 + chave2)
+$ palavras_iguais.take(5)
+
+i) Visualizar em ordem alfabética
+
+$ palavras_ordenadas = palavras_iguais.sortBy(lambda palavra: palavra[0])
+$ palavras_ordenadas.collect()
+
+j) Visualizar em ordem decrescente a quantidade de palavras
+
+$ palavras_ordenadas = palavras_iguais.sortBy(lambda palavra: palavra[0], False)
+$ palavras_ordenadas.collect()
+
+k) Remover as palavras, com a quantidade de palavras > 1
+
+$ remover_palavras = palavras_ordenadas.filter(lambda palavra: palavra[1] <= 1)
+$ remover_palavras.collect()
+
+l) Salvar o RDD no diretorio do HDFS /user/<seu-nome>/logs_count_word
+
+$ remover_palavras.getNumPartitions
+$ remover_palavras.saveAsTextFile("file:///user/cicero/logs_count_word")
+
+------
+
+Exercícios - RDD com Partições
+
+1. Ler com RDD os arquivos localmente do diretório “/opt/spark/logs/” ("file:///opt/spark/logs/") com 10 partições
+
+$ arquivo_particoes = sc.textFile("file:///opt/spark/logs/spark--org.apache.spark.deploy.master.Master-1-jupyter-notebook.out",10)
+$ arquivo_particoes.getNumPartitions()
+
+2. Contar a quantidade de cada palavras do RDD em 5 partições
+
+$ qtdPalavras_particoes = arquivo_particoes.flatMap(lambda linha: linha.split(" "))
+$ qtdPalavras_particoes.getNumPartitions()
+
+$ palavras_minusculas_particoes = qtdPalavras_particoes.map(lambda palavra: palavra.lower())
+
+$ palavras_chave_valor_particoes = palavras_minusculas_particoes.map(lambda palavra: (palavra, 1))
+
+$ palavras_reduce_particoes = palavras_chave_valor_particoes.reduceByKey(lambda chave1, chave2: chave1 + chave2, 5)
+$ palavras_reduce_particoes.getNumPartitions()
+
+3. Salvar o RDD no diretório do HDFS /user/<seu-nome>/logs_count_word_5
+
+$ palavras_reduce_particoes.saveAsTextFile("hdfs:///user/cicero/logs_count_word_5")
+
+$ !hdfs dfs -ls hdfs:///user/cicero/logs_count_word_5
+
+4. Refazer a questão 2, com todas as funções na mesma linha de um RDD
+
+$ qtdPalavras_linha_particoes = arquivo_particoes.flatMap(lambda linha: linha.split(" ")).map(lambda palavra: palavra.lower()).map(lambda palavra: (palavra, 1)).reduceByKey(lambda chave1, chave2: chave1 + chave2, 5)
+$ qtdPalavras_linha_particoes.collect()
