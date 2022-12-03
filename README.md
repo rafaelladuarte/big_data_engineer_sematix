@@ -90,3 +90,8 @@
     - Otimizações com uso de Variáveis Compartilhadas; 
     - Criações de User defined Function; Configurações de Tunning para o Spark Application;
     - Desafiar os estudantes na utilização desses novos conhecimentos com exercícios práticos.
+
+#
+
+## Projeto Final Semantix: Big Data Enginner
+### [Campanha Nacional de Vacinação contra COVID-19]()
