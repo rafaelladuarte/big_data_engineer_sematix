@@ -1,0 +1,155 @@
+Exercícios – Structured Streaming
+
+1. Criar uma aplicação em scala usando o spark para ler os dados da porta 9999 e exibir no console
+
+$ docker exec -it jupyter-spark bash
+$ pyspark
+$ porta_leitura =  spark.readStream.format("socket").option("host","localhost").option("port","9999").load()
+
+//Abrir outro terminal para realizar o envio das mensagens
+$ docker exec -it jupyter-spark bash
+$ nc -lp 9999
+
+//No primeiro terminal aberto, executar o start para iniciar a leitura dos dados em streaming
+porta_saida = porta_leitura.writeStream.format("console").start()
+
+2. Ler os arquivos csv “hdfs://namenode:8020/user/rodrigo/data/iris/*.data” em modo streaming com o seguinte schema:
+
+- sepal_length float
+- sepal_width float
+- petal_length float
+- petal_width float
+- class string
+
+$ !hdfs dfs -ls "hdfs:///user/rodrigo/data/iris"
+
+$ #Saber quantas linhas tem em cada arquivo .data
+#iris = spark.read.csv("hdfs:///user/rodrigo/data/iris/bezdekIris.data")
+
+#iris.count()
+#150 linhas
+#iris = spark.read.csv("hdfs:///user/rodrigo/data/iris/iris.data")
+#iris.count()
+#150 linhas
+
+#Ler todos os arquivos .data
+#iris = spark.read.csv("hdfs:///user/rodrigo/data/iris/*.data")
+#iris.show(5)
+
+$ from pyspark.sql.types import StructType
+
+$ iris_schema = StructType()\
+                        .add("sepal_lenght", "float")\
+                        .add("sepal_width", "float")\
+                        .add("petal_lenght", "float")\
+                        .add("petal_width", "float")\
+                        .add("class", "string")
+
+$ print(iris_schema)
+
+$ iris = spark.read.schema(iris_schema).csv("hdfs:///user/rodrigo/data/iris/*.data")
+$ iris.printSchema()
+
+$ #Se a leitura em bash acima está correto, é só aplicar a leitura em modo Streaming
+$ iris = spark.readStream.schema(iris_schema).csv("hdfs:///user/rodrigo/data/iris/*.data")
+
+3. Visualizar o schema das informações
+
+$ iris.printSchema()
+
+4. Salvar os dados no diretório “hdfs://namenode:8020/user/<nome>/stream_iris/path” e o checkpoint em “hdfs://namenode:8020/user/<nome>/stream_iris/check”
+
+$ iris_saida = iris.writeStream.format("csv")\
+                                        .option("checkpointLocation","hdfs:///user/cicero/stream_iris/check")\
+                                        .option("path","hdfs:///user/cicero/stream_iris/path")\
+                                        .start()
+
+5. Verificar a saida no hdfs e entender como os dados foram salvos
+
+$ #iris_saida.id
+$ # iris_saida.name
+$ # iris_saida.lastProgress
+$ # iris_saida.status
+$ !hdfs dfs -ls "hdfs:///user/cicero/stream_iris/path"
+$ spark.read.csv().show()
+
+6. Bônus: Contar as palavras do exercício 1.
+
+$ 
+
+------
+
+Exercícios – Structured Streaming com Kafka
+
+1. Ler o tópico do kafka “topic-kvspark” em modo batch
+
+//No jupyter-notebook
+
+$ from pyspark.sql.functions import *
+
+$ topic_read = spark.read\
+                    .format("kafka")\
+                    .option("kafka.bootstrap.servers", "kafka:9092")\
+                    .option("subscribe","topic-kvspark")\
+                    .load()
+
+2. Visualizar o schema do tópico
+
+$ topic_read.printSchema()
+
+3. Visualizar o tópico com o campo key e value convertidos em string
+
+$ #Verificar os arquivos em binário
+topic_string = topic_read.select(col("key").cast("string"),col("value").cast(string))
+topic_string.show()
+
+$ #Verificar os arquivos em string
+topic_string = topic_read.select(col("key").cast("string"),col("value").cast(string))
+topic_string.show()
+
+Obs.: Caso não apareça nenhum dado, abra o spark no terminal e digite os comandos abaixo:
+
+$ docker exec -it kafka bash
+$ kafka-topics.sh --bootstrap-server kafka:9092 --list
+//Deve aparecer a lista de tópicos criados. Confira se o nome está correto ou se o tópico realmente existe.
+
+4. Ler o tópico do kafka “topic-kvspark” em modo streaming
+
+$ topic_read_stream = spark.readStream\
+                    .format("kafka")\
+                    .option("kafka.bootstrap.servers", "kafka:9092")\
+                    .option("subscribe","topic-kvspark")\
+                    .load()
+
+5. Visualizar o schema do tópico em streaming
+
+$ topic_read_stream.printSchema()
+
+6. Alterar o tópico em streaming com o campo key e value convertidos para string
+
+$ topic_string_stream = topic_read_stream.select(col("key").cast("string"),col("value").cast("string"))
+
+7. Salvar o tópico em streaming no tópico topic-kvspark-output a cada 5 segundos
+
+$ topic_read_stream_output = topic_read_stream.writeStream\
+                                                        .format("kafka")\
+                                                        .option("kafka.bootstrap-servers", "kafka:9092")\
+                                                        .option(topic, "topic-kvspark-output")\
+                                                        .option("checkpointLocation", "hdfs:///user/cicero/kafka/checkpoint")\
+                                                        .trigger(continuous="5 second")\
+                                                        .start()
+
+$ topic_string_stream_output.status()
+
+Obs.: Confirmar se o tópico foi criado. Pois, muitas vezes o tópico pode não aparecer no início, caso não tenha nenhuma informação enviada.
+Caso queria pegar as informações e salvar desde as que foram enviadas antes de iniciar o leitura, é só incluit um .option()
+
+8. Salvar o tópico na pasta hdfs://namenode:8020/user/<nome>/Kafka/topic-kvspark-output
+
+$ topic_string_stream_output = topic_string_stream.writeStream\
+                                                        .format("csv")\
+                                                        .option("checkpointLocation", "hdfs:///user/cicero/kafka/checkpoint")\
+                                                        .option("path", "hdfs:///user/cicero/kafka/topic-kvspark-output")
+                                                        .start()
+
+$ !hdfs dfs -ls "hdfs:///user/cicero/kafka/topic-kvspark-output"k

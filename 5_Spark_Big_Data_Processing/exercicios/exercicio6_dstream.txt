@@ -1,0 +1,109 @@
+Exercício DStream - Leitura de Dados
+
+1. Instalar o NetCat no container do spark
+
+- `apt update`
+- `apt install netcat`
+
+$ docker exec -it jupyter-spark bash
+$ apt update $$ apt install netcat
+
+2. Criar uma aplicação para ler os dados da porta 9999 e exibir no console
+
+Abrir o Jupyter Notebook:
+
+$ #Importar bibliotecas
+$ from pyspark import SparkContext
+$ from pyspark.streaming import StreamingContext
+$ from time import sleep
+
+$ #Criar o Stream Context
+$ conf = SparkConf().setMaster("local[*]").setAppName("Dtream Python")
+$ sc = SparkContext.getOrCreate(conf)
+$ ssc = StreamingContext(sc, 5)
+
+$ #Definir a porta de saída no Stream
+$ dstream = ssc.socketTextStream("localhost", 9999) #Definindo o local
+
+$ #Definindo a operação que será realizada
+$ dstream.pprint()
+
+#Volte no terminal e no jupyter-spark digite:
+$ nc -lp 9999 
+
+#No jupyter-notebook, execute o comando para começar a leitura do stream
+#Iniciar o Stream Context
+$ ssc.start()
+$ sleep(20) //Rodar somente 20s
+$ ssc.stop() //Matar o StreamContext após os 20s. 
+Obs.: Matando o StreamContext é necessário refazer toda a operação de criação para recriá-lo.
+
+------
+
+Exercício DStream - Word Count
+
+1. Criar o diretório no hdfs “/user/rodrigo/stream”
+
+// No Jupyter-Notebook
+$ !hdfs dfs -mkdir hdfs:///user/rodrigo/stream
+
+2. Criar uma aplicação para contar palavras a cada 10 segundos da porta 9998 e exibir no console durante 50 segundos
+
+$ #Importar bibliotecas
+$ from pyspark import SparkContext
+$ from pyspark.streaming import StreamingContext
+$ from time import sleep
+
+$ #Criar o Stream Context
+$ conf = SparkConf().setMaster("local[*]").setAppName("Dtream WordCount")
+$ sc = SparkContext.getOrCreate(conf)
+$ ssc = StreamingContext(sc, 10)
+
+$ #Definir a porta de saída no Stream
+$ dstream = ssc.socketTextStream("localhost", 9998)
+
+$ wordcount = dstream.flatMap(lambda linha: linha.split(" "))\
+                            .map(lambda palavra: (palavra,1))\
+                            .reduceByKey(lambda chave1, chave2: chave1+chave2)
+$ wordcount.pprint()
+
+$ # Abra o terminal
+$ docker exec -it jupiter-spark bash
+$ nc -lp 9998
+
+$ # Volte no Jupiter-Notebook e execute o comando
+$ ssc.start()
+$ sleep(50)
+$ ssc.stop()
+
+3. Criar uma aplicação para contar palavras a cada 10 segundos da porta 9998 e salvar os dados no namenode no diretório “hdfs://namenode/user/rodrigo/stream/word_count” durante 50 segundos
+
+$ #Importar bibliotecas
+$ from pyspark import SparkContext
+$ from pyspark.streaming import StreamingContext
+$ from time import sleep
+
+$ #Criar o Stream Context
+$ conf = SparkConf().setMaster("local[*]").setAppName("Dtream WordCount")
+$ sc = SparkContext.getOrCreate(conf)
+$ ssc = StreamingContext(sc, 10)
+
+$ #Definir a porta de saída no Stream
+$ dstream = ssc.socketTextStream("localhost", 9998)
+
+$ wordcount = dstream.flatMap(lambda linha: linha.split(" "))\
+                            .map(lambda palavra: (palavra,1))\
+                            .reduceByKey(lambda chave1, chave2: chave1+chave2)
+
+$ wordcount.saveAsTextFile("hdfs:////user/rodrigo/stream/word_count")
+
+$ # Abra o terminal
+$ docker exec -it jupiter-spark bash
+$ nc -lp 9998
+
+$ # Volte no Jupiter-Notebook e execute o comando
+$ ssc.start()
+$ sleep(50)
+$ ssc.stop()
+
+!hdfs dfs -ls hdfs:////user/rodrigo/stream

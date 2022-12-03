@@ -66,7 +66,7 @@
     - Otimização de parâmetros; Melhores práticas em um cluster Kafka;
     - Desafiar os estudantes na utilização desses novos conhecimentos com exercícios práticos.
 
-### Elastic Essential I;
+### [Elastic Essential I](https://github.com/rafaelladuarte/Big_Data_Engineer_Sematix/tree/main/4_Elastic_Essential);  ✅
 - Ementa:  
     - Entendimento de conceitos e arquitetura da Elastic; 
     - Instalação de cluster Elastic através de container;
@@ -79,7 +79,7 @@
     - Entendimento das guias do Kibana; 
     - Desafiar os estudantes na utilização desses novos conhecimentos com exercícios práticos.
 
-### Spark - Big Data Processing.
+### [Spark - Big Data Processing](https://github.com/rafaelladuarte/Big_Data_Engineer_Sematix/tree/main/5_Spark_Big_Data_Processing). ✅
 - Ementa:
     Uso do Jupyter Notebooks para a criação de projetos em Spark com Python; 
     - Operações com RDD, Dataframe e Dataset em Spark para processamento de dados em batch; 

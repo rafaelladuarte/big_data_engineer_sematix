@@ -1,0 +1,156 @@
+Exercício 1 - Spark e Kafka – Spark Streaming
+
+**Kafka**
+
+1. Preparação do ambiente no Kafka
+
+a) Criar o tópico “topic-spark” com 1 partição e o fator de replicação = 1
+$  docker exec -it kafka bash
+$  kafka-topics.sh --bootstrap-server kafka:9092 --topic topic-spark --create --partitions 1 --replication-factor 1
+$  kafka-topics.sh --bootstrap-server kafka:9092 --list //Verificar se foi criado
+
+b) Criar um consumidor no Kafka para ler o “topic-spark”
+
+//No mesmo terminal, executar o comando para consumir
+$ kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic topic-spark
+
+c) Inserir as seguintes mensagens no tópico:
+
+o Msg1
+o Msg2
+o Msg3
+
+//Abrir outro terminal para ser o producer
+$ kafka-console-producer.sh --broker-list kafka:9092 --topic topic-spark
+
+**Spark**
+
+1. Criar um consumidor em Scala usando Spark Streaming para ler o “topic-spark” no cluster Kafka ”kafka:9092”
+
+`$ docker exec -it jupyter-spark bsh`
+`$ spark-shell --packages org.apache.spark:spark-streaming-kafka-0-10_2.11:2.4.1`
+
+// Criar o consumer:
+
+`$import org.apache.kafka.clients.consumer.ConsumerRecord`
+`$import org.apache.kafka.common.serialization.StringDeserializer`
+`$import org.apache.spark.streaming.kafka010._`
+`$import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent`
+`$import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe`
+`$ import org.apache.spark.streaming.{StreamingContext, Seconds}`
+
+`$val kafkaParams = Map[String, Object](
+  "bootstrap.servers" -> "kafka:9092",
+  "key.deserializer" -> classOf[StringDeserializer],
+  "value.deserializer" -> classOf[StringDeserializer],
+  "group.id" -> "aplicacao1",
+  "auto.offset.reset" -> "earliest",
+  "enable.auto.commit" -> (false: java.lang.Boolean)
+)`
+
+`$ val ssc = new StreamContext(sc, Seconds(5))`
+``$val topics = Array("topic-spark")`
+
+`$val stream = KafkaUtils.createDirectStream[String, String](
+  ssc,
+  PreferConsistent,
+  Subscribe[String, String](topics, kafkaParams)
+)`
+
+2. Visualizar o tópico com as seguintes informações
+
+Nome do tópico
+Partição
+Valor
+
+$ val info_stream = stream.map(record => (record.topic, record.partition, record.value))
+$ info_stream.print() //Visualizar 
+
+3. Salvar o tópico no diretório hdfs://namenode:8020/user/<nome>/kafka/dstream
+
+$ info_stream.saveAsTextFiles("hdfs:///user/cicero/kafka/dstream")
+$ ssc.start() //Iniciar o stream
+
+//No outro terminal de producer, enviar mensagens
+#Verificar se foi salvo
+$ hdfs dfs -ls hdfs:///user/cicero/kafka/dstream
+
+------
+
+Exercício 2 - Spark e Kafka – Spark Streaming
+
+**Kafka**
+
+1. Preparação do ambiente no Kafka
+
+a) Criar o tópico “topic-kvspark” com 2 partições e o fator de replicação = 1
+$  docker exec -it kafka bash
+$  kafka-topics.sh --bootstrap-server kafka:9092 --topic topic-spark --create --partitions 2 --replication-factor 1
+$  kafka-topics.sh --bootstrap-server kafka:9092 --list //Verificar se foi criado
+
+b) Criar um consumidor no Kafka para ler o “topic-kvspark”
+
+//No mesmo terminal, executar o comando para consumir
+$ kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic topic-kvspark
+
+c) Inserir as seguintes mensagens no tópico (Chave, Valor):
+
+o 1, Msg1
+o 2, Msg2
+o 3, Msg3
+
+//Abrir outro terminal para ser o producer
+$ kafka-console-producer.sh --broker-list kafka:9092 --topic topic-kvspark --property parse.key.true --property key.separator=,
+
+**Spark**
+
+1. Criar um consumidor em Scala usando Spark Streaming para ler o “topic-kvspark” no cluster Kafka ”kafka:9092”
+
+`$ docker exec -it jupyter-spark bsh`
+`$ spark-shell --packages org.apache.spark:spark-streaming-kafka-0-10_2.11:2.4.1`
+
+// Criar o consumer:
+
+`$import org.apache.kafka.clients.consumer.ConsumerRecord`
+`$import org.apache.kafka.common.serialization.StringDeserializer`
+`$import org.apache.spark.streaming.kafka010._`
+`$import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent`
+`$import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe`
+`$ import org.apache.spark.streaming.{StreamingContext, Seconds}`
+
+`$val kafkaParams = Map[String, Object](
+  "bootstrap.servers" -> "kafka:9092",
+  "key.deserializer" -> classOf[StringDeserializer],
+  "value.deserializer" -> classOf[StringDeserializer],
+  "group.id" -> "aplicacao2",
+  "auto.offset.reset" -> "earliest",
+  "enable.auto.commit" -> (false: java.lang.Boolean)
+)`
+
+`$ val ssc = new StreamContext(sc, Seconds(5))`
+``$val topics = Array("topic-kvspark")`
+
+`$val stream = KafkaUtils.createDirectStream[String, String](
+  ssc,
+  PreferConsistent,
+  Subscribe[String, String](topics, kafkaParams)
+)`
+
+2. Visualizar o tópico com as seguintes informações
+
+Nome do tópico
+Partição
+Chave
+Valor
+
+$ val info_dstream = stream.map(record => (record.topic, record.partition, record.key, record.value))
+$ info_dstream.print() //Visualizar 
+
+3. Salvar o tópico no diretório hdfs://namenode:8020/user/<nome>/kafka/dstreamkv
+
+$ info_dstream.saveAsTextFiles("hdfs:///user/cicero/kafka/dstreamkv")
+$ ssc.start() //Iniciar o stream
+
+//No outro terminal de producer, enviar mensagens
+#Verificar se foi salvo
+$ hdfs dfs -ls hdfs:///user/cicero/kafka/dstreamkv
