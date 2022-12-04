@@ -2,9 +2,9 @@ Exercícios 5 - WithColumn 1/2
 
 1. Criar um dataframe para ler o arquivo no HDFS /user/<nome/data/juros_selic/juros_selic
 
-$ !hdfs dfs -cat "hdfs:///user/rodrigo/data/juros_selic/juros_selic"
+$ !hdfs dfs -cat "hdfs:///user/rafaella/data/juros_selic/juros_selic"
 $ from pyspark.sql.functions import *
-$ juros_df = spark.read.csv("hdfs:///user/rodrigo/data/juros_selic/juros_selic", sep=";", header="true")
+$ juros_df = spark.read.csv("hdfs:///user/rafaella/data/juros_selic/juros_selic", sep=";", header="true")
 $ juros_df.show(5)
 
 2. Alterar o formato do campo data para “MM/dd/yyyy”
@@ -30,11 +30,11 @@ juros_substring.show(3)
 $ juros_split = juros_substring.withColumn("ano_split", split(col("data"), "/").getItem(2))
 $ juros_split.show(3) #Deixar somente o ano
 
-6. Salvar no hdfs /user/rodrigo/juros_selic_americano no formato CSV, incluindo o cabeçalho
+6. Salvar no hdfs /user/rafaella/juros_selic_americano no formato CSV, incluindo o cabeçalho
 
-$ juros_split.write.csv("hdfs:///user/rodrigo//juros_selic_americano", header="true")
+$ juros_split.write.csv("hdfs:///user/rafaella//juros_selic_americano", header="true")
 
-$ !hdfs dfs -ls "hdfs:///user/rodrigo//juros_selic_americano"
+$ !hdfs dfs -ls "hdfs:///user/rafaella//juros_selic_americano"
 
 ------
 
@@ -42,12 +42,12 @@ Exercicios 5 - WithColumn 2/2
 
 1. Criar um dataframe para ler o arquivo no HDFS /user/<nome/data/juros_selic/juros_selic
 
-$ !hdfs dfs -cat "hdfs:///user/rodrigo/data/juros_selic/juros_selic"
+$ !hdfs dfs -cat "hdfs:///user/rafaella/data/juros_selic/juros_selic"
 
 $ from pyspark.sql.functions import *
 $ from pyspark.sql.types import *
 
-$juros_selic = spark.read.csv("hdfs:///user/rodrigo/data/juros_selic/juros_selic", header="true", sep=";")
+$juros_selic = spark.read.csv("hdfs:///user/rafaella/data/juros_selic/juros_selic", header="true", sep=";")
 juros_selic.show(3)
 
 2. Agrupar todas as datas pelo ano em ordem decrescente e salvar a quantidade de meses ocorridos, o valor médio, mínimo e máximo do campo valor com a seguinte estrutura:

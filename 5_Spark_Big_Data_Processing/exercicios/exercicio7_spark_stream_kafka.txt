@@ -68,12 +68,12 @@ $ info_stream.print() //Visualizar
 
 3. Salvar o tópico no diretório hdfs://namenode:8020/user/<nome>/kafka/dstream
 
-$ info_stream.saveAsTextFiles("hdfs:///user/cicero/kafka/dstream")
+$ info_stream.saveAsTextFiles("hdfs:///user/rafaella/kafka/dstream")
 $ ssc.start() //Iniciar o stream
 
 //No outro terminal de producer, enviar mensagens
 #Verificar se foi salvo
-$ hdfs dfs -ls hdfs:///user/cicero/kafka/dstream
+$ hdfs dfs -ls hdfs:///user/rafaella/kafka/dstream
 
 ------
 
@@ -148,9 +148,9 @@ $ info_dstream.print() //Visualizar
 
 3. Salvar o tópico no diretório hdfs://namenode:8020/user/<nome>/kafka/dstreamkv
 
-$ info_dstream.saveAsTextFiles("hdfs:///user/cicero/kafka/dstreamkv")
+$ info_dstream.saveAsTextFiles("hdfs:///user/rafaella/kafka/dstreamkv")
 $ ssc.start() //Iniciar o stream
 
 //No outro terminal de producer, enviar mensagens
 #Verificar se foi salvo
-$ hdfs dfs -ls hdfs:///user/cicero/kafka/dstreamkv
+$ hdfs dfs -ls hdfs:///user/rafaella/kafka/dstreamkv

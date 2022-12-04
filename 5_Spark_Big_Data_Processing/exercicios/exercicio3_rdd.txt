@@ -65,7 +65,7 @@ $ remover_palavras.collect()
 l) Salvar o RDD no diretorio do HDFS /user/<seu-nome>/logs_count_word
 
 $ remover_palavras.getNumPartitions
-$ remover_palavras.saveAsTextFile("file:///user/cicero/logs_count_word")
+$ remover_palavras.saveAsTextFile("file:///user/rafaella/logs_count_word")
 
 ------
 
@@ -90,9 +90,9 @@ $ palavras_reduce_particoes.getNumPartitions()
 
 3. Salvar o RDD no diretório do HDFS /user/<seu-nome>/logs_count_word_5
 
-$ palavras_reduce_particoes.saveAsTextFile("hdfs:///user/cicero/logs_count_word_5")
+$ palavras_reduce_particoes.saveAsTextFile("hdfs:///user/rafaella/logs_count_word_5")
 
-$ !hdfs dfs -ls hdfs:///user/cicero/logs_count_word_5
+$ !hdfs dfs -ls hdfs:///user/rafaella/logs_count_word_5
 
 4. Refazer a questão 2, com todas as funções na mesma linha de um RDD
 

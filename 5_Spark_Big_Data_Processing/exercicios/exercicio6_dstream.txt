@@ -42,10 +42,10 @@ Obs.: Matando o StreamContext é necessário refazer toda a operação de criaç
 
 Exercício DStream - Word Count
 
-1. Criar o diretório no hdfs “/user/rodrigo/stream”
+1. Criar o diretório no hdfs “/user/rafaella/stream”
 
 // No Jupyter-Notebook
-$ !hdfs dfs -mkdir hdfs:///user/rodrigo/stream
+$ !hdfs dfs -mkdir hdfs:///user/rafaella/stream
 
 2. Criar uma aplicação para contar palavras a cada 10 segundos da porta 9998 e exibir no console durante 50 segundos
 
@@ -76,7 +76,7 @@ $ ssc.start()
 $ sleep(50)
 $ ssc.stop()
 
-3. Criar uma aplicação para contar palavras a cada 10 segundos da porta 9998 e salvar os dados no namenode no diretório “hdfs://namenode/user/rodrigo/stream/word_count” durante 50 segundos
+3. Criar uma aplicação para contar palavras a cada 10 segundos da porta 9998 e salvar os dados no namenode no diretório “hdfs://namenode/user/rafaella/stream/word_count” durante 50 segundos
 
 $ #Importar bibliotecas
 $ from pyspark import SparkContext
@@ -95,7 +95,7 @@ $ wordcount = dstream.flatMap(lambda linha: linha.split(" "))\
                             .map(lambda palavra: (palavra,1))\
                             .reduceByKey(lambda chave1, chave2: chave1+chave2)
 
-$ wordcount.saveAsTextFile("hdfs:////user/rodrigo/stream/word_count")
+$ wordcount.saveAsTextFile("hdfs:////user/rafaella/stream/word_count")
 
 $ # Abra o terminal
 $ docker exec -it jupiter-spark bash
@@ -106,4 +106,4 @@ $ ssc.start()
 $ sleep(50)
 $ ssc.stop()
 
-!hdfs dfs -ls hdfs:////user/rodrigo/stream
+!hdfs dfs -ls hdfs:////user/rafaella/stream

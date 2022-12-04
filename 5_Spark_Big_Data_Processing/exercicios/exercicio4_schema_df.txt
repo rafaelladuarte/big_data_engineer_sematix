@@ -1,12 +1,12 @@
 Exercício – Spark Schemas
 
-1. Criar o DataFrame names_us_sem_schema para ler os arquivos no HDFS “/user/rodrigo/data/names”
+1. Criar o DataFrame names_us_sem_schema para ler os arquivos no HDFS “/user/rafaella/data/names”
 
 1. Verificar o tipo de arquivo para levantar qual será o modo de leitura:
-   $ !hdfs dfs -ls hdfs:///user/rodrigo/data/names
-   $ !hdfs dfs -cat hdfs:///user/rodrigo/data/names/yob1880.txt
+   $ !hdfs dfs -ls hdfs:///user/rafaella/data/names
+   $ !hdfs dfs -cat hdfs:///user/rafaella/data/names/yob1880.txt
 2. Realizar a leitura:
-   $ names_us_sem_schema_df = spark.read.csv("hdfs:///user/rodrigo/data/names")
+   $ names_us_sem_schema_df = spark.read.csv("hdfs:///user/rafaella/data/names")
 
 2. Visualizar o Schema e os 5 primeiros registos do names_us_sem_schema
 
@@ -30,18 +30,18 @@ StructField("quantidade",IntegerType())]
 
 $ schema_names = StructType(estrutura_lista)
 
-$ names_us_df = spark.read.csv("hdfs:///user/rodrigo/data/names", schema=schema_names)
+$ names_us_df = spark.read.csv("hdfs:///user/rafaella/data/names", schema=schema_names)
 
 4. Visualizar o Schema e os 5 primeiros registos do names_us
 
 $ print(names_us_df.printSchema())
 $ names_us_df.show(5)
 
-5. Salvar o DataFrame names_us no formato orc no hdfs “/user/rodrigo/names_us_orc”
+5. Salvar o DataFrame names_us no formato orc no hdfs “/user/rafaella/names_us_orc”
 
-$ names_us_df.write.orc("hdfs:///user/rodrigo/names_us_orc")
+$ names_us_df.write.orc("hdfs:///user/rafaella/names_us_orc")
 
-$ !hdfs dfs -ls hdfs:///user/rodrigo/names_us_orc
+$ !hdfs dfs -ls hdfs:///user/rafaella/names_us_orc
 
 ------
 
@@ -51,7 +51,7 @@ Exercícios - Dataset com DataFrame
 
 $ docker exec -it jupyter-spark bash
 $ spark-shell
-$ val names_us = spark.read.csv("hdfs:///user/rodrigo/data/names")
+$ val names_us = spark.read.csv("hdfs:///user/rafaella/data/names")
 
 2. Visualizar o Schema do names_us
 
@@ -71,8 +71,8 @@ $ case class Nascimento(nome: String, sexo:String, quantidade: Int)
 
 $ import org.apache.spark.sql.Encoders
 $ val schema_names = Encoders.product[Nascimento].schema
-$ val names_ds = spark.read.schema(schema_names).csv("hdfs:///user/rodrigo/data/names") //Transforma em um DataFrame
-$ val names_ds = spark.read.schema(schema_names).csv("hdfs:///user/rodrigo/data/names").as[Nascimento] //Transforma em um DataSet
+$ val names_ds = spark.read.schema(schema_names).csv("hdfs:///user/rafaella/data/names") //Transforma em um DataFrame
+$ val names_ds = spark.read.schema(schema_names).csv("hdfs:///user/rafaella/data/names").as[Nascimento] //Transforma em um DataSet
 
 6. Visualizar o Schema do names_ds
 

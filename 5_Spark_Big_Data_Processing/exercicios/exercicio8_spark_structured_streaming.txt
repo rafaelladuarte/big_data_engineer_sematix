@@ -13,7 +13,7 @@ $ nc -lp 9999
 //No primeiro terminal aberto, executar o start para iniciar a leitura dos dados em streaming
 porta_saida = porta_leitura.writeStream.format("console").start()
 
-2. Ler os arquivos csv “hdfs://namenode:8020/user/rodrigo/data/iris/*.data” em modo streaming com o seguinte schema:
+2. Ler os arquivos csv “hdfs://namenode:8020/user/rafaella/data/iris/*.data” em modo streaming com o seguinte schema:
 
 - sepal_length float
 - sepal_width float
@@ -21,19 +21,19 @@ porta_saida = porta_leitura.writeStream.format("console").start()
 - petal_width float
 - class string
 
-$ !hdfs dfs -ls "hdfs:///user/rodrigo/data/iris"
+$ !hdfs dfs -ls "hdfs:///user/rafaella/data/iris"
 
 $ #Saber quantas linhas tem em cada arquivo .data
-#iris = spark.read.csv("hdfs:///user/rodrigo/data/iris/bezdekIris.data")
+#iris = spark.read.csv("hdfs:///user/rafaella/data/iris/bezdekIris.data")
 
 #iris.count()
 #150 linhas
-#iris = spark.read.csv("hdfs:///user/rodrigo/data/iris/iris.data")
+#iris = spark.read.csv("hdfs:///user/rafaella/data/iris/iris.data")
 #iris.count()
 #150 linhas
 
 #Ler todos os arquivos .data
-#iris = spark.read.csv("hdfs:///user/rodrigo/data/iris/*.data")
+#iris = spark.read.csv("hdfs:///user/rafaella/data/iris/*.data")
 #iris.show(5)
 
 $ from pyspark.sql.types import StructType
@@ -47,11 +47,11 @@ $ iris_schema = StructType()\
 
 $ print(iris_schema)
 
-$ iris = spark.read.schema(iris_schema).csv("hdfs:///user/rodrigo/data/iris/*.data")
+$ iris = spark.read.schema(iris_schema).csv("hdfs:///user/rafaella/data/iris/*.data")
 $ iris.printSchema()
 
 $ #Se a leitura em bash acima está correto, é só aplicar a leitura em modo Streaming
-$ iris = spark.readStream.schema(iris_schema).csv("hdfs:///user/rodrigo/data/iris/*.data")
+$ iris = spark.readStream.schema(iris_schema).csv("hdfs:///user/rafaella/data/iris/*.data")
 
 3. Visualizar o schema das informações
 
