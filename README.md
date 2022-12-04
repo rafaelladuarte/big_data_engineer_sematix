@@ -1,4 +1,4 @@
-# Big Data do Semantix Academy: 
+# Treinamento Big Data Engineer | Semantix Academy: 
 
 <p align="center">
 <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/rafaelladuarte/Big_Data_Engineer_Sematix?style=plastic">
@@ -94,4 +94,4 @@
 #
 
 ## Projeto Final Semantix: Big Data Enginner
-### [Campanha Nacional de Vacinação contra COVID-19]()
+### [Campanha Nacional de Vacinação contra COVID-19](https://github.com/rafaelladuarte/covid_big_data_enginner_semantix_final_project)
